@@ -9,11 +9,11 @@ using Jellyfin.Data.Entities;
 using Jellyfin.Data.Enums;
 using MediaBrowser.Controller.Dto;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.Playlists;
 using MediaBrowser.Model.Querying;
-using MusicAlbum = MediaBrowser.Controller.Entities.Audio.MusicAlbum;
+using MusicAlbum = MediaBrowser.Controller.Entities.AudioEntity.MusicAlbum;
 
 namespace Emby.Server.Implementations.Library
 {
@@ -26,9 +26,9 @@ namespace Emby.Server.Implementations.Library
             _libraryManager = libraryManager;
         }
 
-        public List<BaseItem> GetInstantMixFromSong(Audio item, User user, DtoOptions dtoOptions)
+        public List<BaseItem> GetInstantMixFromSong(CommonAudioEntity item, User user, DtoOptions dtoOptions)
         {
-            var list = new List<Audio>
+            var list = new List<CommonAudioEntity>
             {
                 item
             };
@@ -51,10 +51,10 @@ namespace Emby.Server.Implementations.Library
             var genres = item
                .GetRecursiveChildren(user, new InternalItemsQuery(user)
                {
-                   IncludeItemTypes = new[] { nameof(Audio) },
+                   IncludeItemTypes = new[] { nameof(CommonAudioEntity) },
                    DtoOptions = dtoOptions
                })
-               .Cast<Audio>()
+               .Cast<CommonAudioEntity>()
                .SelectMany(i => i.Genres)
                .Concat(item.Genres)
                .DistinctNames();
@@ -88,7 +88,7 @@ namespace Emby.Server.Implementations.Library
         {
             return _libraryManager.GetItemList(new InternalItemsQuery(user)
             {
-                IncludeItemTypes = new[] { nameof(Audio) },
+                IncludeItemTypes = new[] { nameof(CommonAudioEntity) },
 
                 GenreIds = genreIds.ToArray(),
 
@@ -122,7 +122,7 @@ namespace Emby.Server.Implementations.Library
                 return GetInstantMixFromArtist(artist, user, dtoOptions);
             }
 
-            if (item is Audio song)
+            if (item is CommonAudioEntity song)
             {
                 return GetInstantMixFromSong(song, user, dtoOptions);
             }

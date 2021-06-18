@@ -20,7 +20,7 @@ using MediaBrowser.Controller.Channels;
 using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Drawing;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Extensions;
@@ -1285,11 +1285,11 @@ namespace Emby.Server.Implementations.Data
             {
                 return false;
             }
-            else if (type == typeof(AudioBook))
+            else if (type == typeof(AudioBookEntity))
             {
                 return false;
             }
-            else if (type == typeof(Audio))
+            else if (type == typeof(CommonAudioEntity))
             {
                 return false;
             }
@@ -4816,14 +4816,14 @@ namespace Emby.Server.Implementations.Data
             typeof(LiveTvProgram),
             typeof(LiveTvChannel),
             typeof(Series),
-            typeof(Audio),
+            typeof(CommonAudioEntity),
             typeof(MusicAlbum),
             typeof(MusicArtist),
             typeof(MusicGenre),
             typeof(MusicVideo),
             typeof(Movie),
             typeof(Playlist),
-            typeof(AudioBook),
+            typeof(AudioBookEntity),
             typeof(Trailer),
             typeof(BoxSet),
             typeof(Episode),
@@ -5219,7 +5219,7 @@ AND Type = @InternalPersonType)");
                 new[] { 2 },
                 new string[]
                 {
-                    typeof(Audio).FullName,
+                    typeof(CommonAudioEntity).FullName,
                     typeof(MusicVideo).FullName,
                     typeof(MusicAlbum).FullName,
                     typeof(MusicArtist).FullName
@@ -5234,7 +5234,7 @@ AND Type = @InternalPersonType)");
                 Array.Empty<string>(),
                 new string[]
                 {
-                    typeof(Audio).FullName,
+                    typeof(CommonAudioEntity).FullName,
                     typeof(MusicVideo).FullName,
                     typeof(MusicAlbum).FullName,
                     typeof(MusicArtist).FullName
@@ -5604,7 +5604,7 @@ AND Type = @InternalPersonType)");
                 {
                     counts.ArtistCount++;
                 }
-                else if (typeName.Equals(typeof(Audio).FullName, StringComparison.OrdinalIgnoreCase))
+                else if (typeName.Equals(typeof(CommonAudioEntity).FullName, StringComparison.OrdinalIgnoreCase))
                 {
                     counts.SongCount++;
                 }

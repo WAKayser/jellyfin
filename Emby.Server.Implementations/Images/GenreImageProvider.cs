@@ -8,7 +8,7 @@ using MediaBrowser.Common.Configuration;
 using MediaBrowser.Controller.Drawing;
 using MediaBrowser.Controller.Dto;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Library;
@@ -48,7 +48,7 @@ namespace Emby.Server.Implementations.Images
                 {
                     nameof(MusicAlbum),
                     nameof(MusicVideo),
-                    nameof(Audio)
+                    nameof(CommonAudioEntity)
                 },
                 OrderBy = new[] { (ItemSortBy.Random, SortOrder.Ascending) },
                 Limit = 4,

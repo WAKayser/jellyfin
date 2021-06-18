@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.MediaEncoding;
 using MediaBrowser.Controller.Persistence;
@@ -41,7 +41,7 @@ namespace MediaBrowser.Providers.MediaInfo
             T item,
             MetadataRefreshOptions options,
             CancellationToken cancellationToken)
-            where T : Audio
+            where T : CommonAudioEntity
         {
             var path = item.Path;
             var protocol = item.PathProtocol ?? MediaProtocol.File;
@@ -80,7 +80,7 @@ namespace MediaBrowser.Providers.MediaInfo
         /// <param name="audio">The audio.</param>
         /// <param name="mediaInfo">The media information.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        protected void Fetch(Audio audio, Model.MediaInfo.MediaInfo mediaInfo, CancellationToken cancellationToken)
+        protected void Fetch(CommonAudioEntity audio, Model.MediaInfo.MediaInfo mediaInfo, CancellationToken cancellationToken)
         {
             var mediaStreams = mediaInfo.MediaStreams;
 
@@ -103,7 +103,7 @@ namespace MediaBrowser.Providers.MediaInfo
         /// </summary>
         /// <param name="audio">The audio.</param>
         /// <param name="data">The data.</param>
-        private void FetchDataFromTags(Audio audio, Model.MediaInfo.MediaInfo data)
+        private void FetchDataFromTags(CommonAudioEntity audio, Model.MediaInfo.MediaInfo data)
         {
             // Only set Name if title was found in the dictionary
             if (!string.IsNullOrEmpty(data.Name))

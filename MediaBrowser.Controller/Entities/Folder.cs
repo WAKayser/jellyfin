@@ -17,7 +17,7 @@ using MediaBrowser.Controller.Channels;
 using MediaBrowser.Controller.Collections;
 using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Dto;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.Providers;
@@ -26,7 +26,7 @@ using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
 using Microsoft.Extensions.Logging;
 using Episode = MediaBrowser.Controller.Entities.TV.Episode;
-using MusicAlbum = MediaBrowser.Controller.Entities.Audio.MusicAlbum;
+using MusicAlbum = MediaBrowser.Controller.Entities.AudioEntity.MusicAlbum;
 using Season = MediaBrowser.Controller.Entities.TV.Season;
 using Series = MediaBrowser.Controller.Entities.TV.Series;
 

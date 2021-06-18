@@ -1251,7 +1251,7 @@ namespace MediaBrowser.Controller.Entities
         /// Loads the theme songs.
         /// </summary>
         /// <returns>List{Audio.Audio}.</returns>
-        private static Audio.Audio[] LoadThemeSongs(List<FileSystemMetadata> fileSystemChildren, IDirectoryService directoryService)
+        private static AudioEntity.CommonAudioEntity[] LoadThemeSongs(List<FileSystemMetadata> fileSystemChildren, IDirectoryService directoryService)
         {
             var files = fileSystemChildren.Where(i => i.IsDirectory)
                 .Where(i => string.Equals(i.Name, ThemeSongsFolderName, StringComparison.OrdinalIgnoreCase))
@@ -1263,11 +1263,11 @@ namespace MediaBrowser.Controller.Entities
                 .Where(i => !i.IsDirectory && System.IO.Path.GetFileNameWithoutExtension(i.FullName.AsSpan()).Equals(ThemeSongFilename, StringComparison.OrdinalIgnoreCase)));
 
             return LibraryManager.ResolvePaths(files, directoryService, null, new LibraryOptions())
-                .OfType<Audio.Audio>()
+                .OfType<AudioEntity.CommonAudioEntity>()
                 .Select(audio =>
                 {
                     // Try to retrieve it from the db. If we don't find it, use the resolved version
-                    var dbItem = LibraryManager.GetItemById(audio.Id) as Audio.Audio;
+                    var dbItem = LibraryManager.GetItemById(audio.Id) as AudioEntity.CommonAudioEntity;
 
                     if (dbItem != null)
                     {

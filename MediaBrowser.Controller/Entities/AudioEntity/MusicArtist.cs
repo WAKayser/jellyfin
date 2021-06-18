@@ -16,7 +16,7 @@ using MediaBrowser.Model.Entities;
 using Microsoft.Extensions.Logging;
 using MetadataProvider = MediaBrowser.Model.Entities.MetadataProvider;
 
-namespace MediaBrowser.Controller.Entities.Audio
+namespace MediaBrowser.Controller.Entities.AudioEntity
 {
     /// <summary>
     /// Class MusicArtist.
@@ -159,10 +159,10 @@ namespace MediaBrowser.Controller.Entities.Audio
         {
             var info = GetItemLookupInfo<ArtistInfo>();
 
-            info.SongInfos = GetRecursiveChildren(i => i is Audio)
-                .Cast<Audio>()
-                .Select(i => i.GetLookupInfo())
-                .ToList();
+            info.SetSongInfos((System.Collections.ObjectModel.Collection<SongInfo>)
+                GetRecursiveChildren(i => i is CommonAudioEntity)
+                .Cast<CommonAudioEntity>()
+                .Select(i => i.GetLookupInfo()));
 
             return info;
         }

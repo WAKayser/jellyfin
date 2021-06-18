@@ -16,7 +16,7 @@ using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
 using MetadataProvider = MediaBrowser.Model.Entities.MetadataProvider;
 
-namespace MediaBrowser.Controller.Entities.Audio
+namespace MediaBrowser.Controller.Entities.AudioEntity
 {
     /// <summary>
     /// Class MusicAlbum.
@@ -81,7 +81,7 @@ namespace MediaBrowser.Controller.Entities.Audio
         /// </summary>
         /// <value>The tracks.</value>
         [JsonIgnore]
-        public IEnumerable<Audio> Tracks => GetRecursiveChildren(i => i is Audio).Cast<Audio>();
+        public IEnumerable<CommonAudioEntity> Tracks => GetRecursiveChildren(i => i is CommonAudioEntity).Cast<CommonAudioEntity>();
 
         protected override IEnumerable<BaseItem> GetEligibleChildrenForRecursiveChildren(User user)
         {
@@ -140,15 +140,15 @@ namespace MediaBrowser.Controller.Entities.Audio
 
             if (artist != null)
             {
-                id.ArtistProviderIds = artist.ProviderIds;
+                id.SetArtistProviderIds(artist.ProviderIds);
             }
 
-            id.SongInfos = GetRecursiveChildren(i => i is Audio)
-                .Cast<Audio>()
-                .Select(i => i.GetLookupInfo())
-                .ToList();
+            id.SetSongInfos((System.Collections.ObjectModel.Collection<SongInfo>)
+                GetRecursiveChildren(i => i is CommonAudioEntity)
+                .Cast<CommonAudioEntity>()
+                .Select(i => i.GetLookupInfo()));
 
-            var album = id.SongInfos
+            var album = id.GetSongInfos()
                 .Select(i => i.Album)
                 .FirstOrDefault(i => !string.IsNullOrEmpty(i));
 

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using MediaBrowser.Common.Extensions;
 using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.MediaEncoding;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
@@ -45,7 +45,7 @@ namespace MediaBrowser.Providers.MediaInfo
 
         public Task<DynamicImageResponse> GetImage(BaseItem item, ImageType type, CancellationToken cancellationToken)
         {
-            var audio = (Audio)item;
+            var audio = (CommonAudioEntity)item;
 
             var imageStreams =
                 audio.GetMediaStreams(MediaStreamType.EmbeddedImage)
@@ -58,10 +58,10 @@ namespace MediaBrowser.Providers.MediaInfo
                 return Task.FromResult(new DynamicImageResponse { HasImage = false });
             }
 
-            return GetImage((Audio)item, imageStreams, cancellationToken);
+            return GetImage((CommonAudioEntity)item, imageStreams, cancellationToken);
         }
 
-        public async Task<DynamicImageResponse> GetImage(Audio item, List<MediaStream> imageStreams, CancellationToken cancellationToken)
+        public async Task<DynamicImageResponse> GetImage(CommonAudioEntity item, List<MediaStream> imageStreams, CancellationToken cancellationToken)
         {
             var path = GetAudioImagePath(item);
 
@@ -95,11 +95,11 @@ namespace MediaBrowser.Providers.MediaInfo
             };
         }
 
-        private string GetAudioImagePath(Audio item)
+        private string GetAudioImagePath(CommonAudioEntity item)
         {
             string filename;
 
-            if (item.GetType() == typeof(Audio))
+            if (item.GetType() == typeof(CommonAudioEntity))
             {
                 if (item.AlbumArtists.Count > 0
                     && !string.IsNullOrWhiteSpace(item.Album)
@@ -137,7 +137,7 @@ namespace MediaBrowser.Providers.MediaInfo
                 return false;
             }
 
-            return item is Audio;
+            return item is CommonAudioEntity;
         }
     }
 }

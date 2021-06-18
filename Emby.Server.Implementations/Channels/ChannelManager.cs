@@ -17,7 +17,7 @@ using MediaBrowser.Controller.Channels;
 using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Dto;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Channels;
@@ -29,7 +29,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Episode = MediaBrowser.Controller.Entities.TV.Episode;
 using Movie = MediaBrowser.Controller.Entities.Movies.Movie;
-using MusicAlbum = MediaBrowser.Controller.Entities.Audio.MusicAlbum;
+using MusicAlbum = MediaBrowser.Controller.Entities.AudioEntity.MusicAlbum;
 using Season = MediaBrowser.Controller.Entities.TV.Season;
 using Series = MediaBrowser.Controller.Entities.TV.Series;
 
@@ -996,8 +996,8 @@ namespace Emby.Server.Implementations.Channels
             else if (info.MediaType == ChannelMediaType.Audio)
             {
                 item = info.ContentType == ChannelMediaContentType.Podcast
-                    ? GetItemById<AudioBook>(info.Id, channelProvider.Name, out isNew)
-                    : GetItemById<Audio>(info.Id, channelProvider.Name, out isNew);
+                    ? GetItemById<AudioBookEntity>(info.Id, channelProvider.Name, out isNew)
+                    : GetItemById<CommonAudioEntity>(info.Id, channelProvider.Name, out isNew);
             }
             else
             {
@@ -1120,7 +1120,7 @@ namespace Emby.Server.Implementations.Channels
 
             item.ExternalId = info.Id;
 
-            if (item is Audio channelAudioItem)
+            if (item is CommonAudioEntity channelAudioItem)
             {
                 channelAudioItem.ExtraType = info.ExtraType;
 

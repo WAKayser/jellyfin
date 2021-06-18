@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Jellyfin.Data.Entities;
 using MediaBrowser.Controller.Dto;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Extensions;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.Playlists;
@@ -25,7 +25,7 @@ using Microsoft.Extensions.Logging;
 using PlaylistsNET.Content;
 using PlaylistsNET.Models;
 using Genre = MediaBrowser.Controller.Entities.Genre;
-using MusicAlbum = MediaBrowser.Controller.Entities.Audio.MusicAlbum;
+using MusicAlbum = MediaBrowser.Controller.Entities.AudioEntity.MusicAlbum;
 
 namespace Emby.Server.Implementations.Playlists
 {

@@ -17,7 +17,7 @@ using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Drawing;
 using MediaBrowser.Controller.Dto;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.LiveTv;
@@ -33,7 +33,7 @@ using Book = MediaBrowser.Controller.Entities.Book;
 using Episode = MediaBrowser.Controller.Entities.TV.Episode;
 using Genre = MediaBrowser.Controller.Entities.Genre;
 using Movie = MediaBrowser.Controller.Entities.Movies.Movie;
-using MusicAlbum = MediaBrowser.Controller.Entities.Audio.MusicAlbum;
+using MusicAlbum = MediaBrowser.Controller.Entities.AudioEntity.MusicAlbum;
 using Series = MediaBrowser.Controller.Entities.TV.Series;
 
 namespace Emby.Dlna.ContentDirectory
@@ -1143,7 +1143,7 @@ namespace Emby.Dlna.ContentDirectory
             query.Parent = parent;
             query.SetUser(user);
 
-            query.IncludeItemTypes = new[] { nameof(Audio) };
+            query.IncludeItemTypes = new[] { nameof(CommonAudioEntity) };
 
             var result = _libraryManager.GetItemsResult(query);
 
@@ -1163,7 +1163,7 @@ namespace Emby.Dlna.ContentDirectory
             query.Parent = parent;
             query.SetUser(user);
             query.IsFavorite = true;
-            query.IncludeItemTypes = new[] { nameof(Audio) };
+            query.IncludeItemTypes = new[] { nameof(CommonAudioEntity) };
 
             var result = _libraryManager.GetItemsResult(query);
 
@@ -1411,7 +1411,7 @@ namespace Emby.Dlna.ContentDirectory
                 {
                     UserId = user.Id,
                     Limit = 50,
-                    IncludeItemTypes = new[] { nameof(Audio) },
+                    IncludeItemTypes = new[] { nameof(CommonAudioEntity) },
                     ParentId = parent?.Id ?? Guid.Empty,
                     GroupItems = true
                 },

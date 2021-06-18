@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -12,7 +12,7 @@ using MediaBrowser.Common.Net;
 using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Devices;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.MediaEncoding;
 using MediaBrowser.Controller.Net;
@@ -218,7 +218,7 @@ namespace Jellyfin.Api.Helpers
                 mediaSource.SupportsTranscoding = false;
             }
 
-            if (item is Audio)
+            if (item is CommonAudioEntity)
             {
                 _logger.LogInformation(
                     "User policy for {0}. EnableAudioPlaybackTranscoding: {1}",
@@ -250,7 +250,7 @@ namespace Jellyfin.Api.Helpers
                     mediaSource.SupportsDirectStream = true;
                     options.MaxBitrate = maxBitrate;
 
-                    if (item is Audio)
+                    if (item is CommonAudioEntity)
                     {
                         if (!user.HasPermission(PermissionKind.EnableAudioPlaybackTranscoding))
                         {
@@ -298,7 +298,7 @@ namespace Jellyfin.Api.Helpers
                 {
                     options.MaxBitrate = GetMaxBitrate(maxBitrate, user, ipAddress);
 
-                    if (item is Audio)
+                    if (item is CommonAudioEntity)
                     {
                         if (!user.HasPermission(PermissionKind.EnableAudioPlaybackTranscoding))
                         {

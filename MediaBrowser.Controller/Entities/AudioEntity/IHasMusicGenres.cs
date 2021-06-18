@@ -2,7 +2,7 @@
 
 #pragma warning disable CS1591
 
-namespace MediaBrowser.Controller.Entities.Audio
+namespace MediaBrowser.Controller.Entities.AudioEntity
 {
     public interface IHasMusicGenres
     {

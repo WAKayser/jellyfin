@@ -18,7 +18,7 @@ using MediaBrowser.Common.Progress;
 using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Dto;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Library;
@@ -417,7 +417,7 @@ namespace Jellyfin.Api.Controllers
                 EpisodeCount = GetCount(typeof(Episode), user, isFavorite),
                 MovieCount = GetCount(typeof(Movie), user, isFavorite),
                 SeriesCount = GetCount(typeof(Series), user, isFavorite),
-                SongCount = GetCount(typeof(Audio), user, isFavorite),
+                SongCount = GetCount(typeof(CommonAudioEntity), user, isFavorite),
                 MusicVideoCount = GetCount(typeof(MusicVideo), user, isFavorite),
                 BoxSetCount = GetCount(typeof(BoxSet), user, isFavorite),
                 BookCount = GetCount(typeof(Book), user, isFavorite)

@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.IO;
 using Microsoft.Extensions.Logging;
@@ -56,7 +56,7 @@ namespace MediaBrowser.LocalMetadata.Images
             }
 
             // Extracted images will be saved in here
-            if (item is Audio)
+            if (item is CommonAudioEntity)
             {
                 return true;
             }

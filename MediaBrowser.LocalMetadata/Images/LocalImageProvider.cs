@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Providers;
@@ -83,7 +83,7 @@ namespace MediaBrowser.LocalMetadata.Images
             if (item.SupportsLocalMetadata)
             {
                 // Episode has its own provider
-                if (item is Episode || item is Audio || item is Photo)
+                if (item is Episode || item is CommonAudioEntity || item is Photo)
                 {
                     return false;
                 }
@@ -194,7 +194,7 @@ namespace MediaBrowser.LocalMetadata.Images
 
             var added = false;
             var isEpisode = item is Episode;
-            var isSong = item.GetType() == typeof(Audio);
+            var isSong = item.GetType() == typeof(CommonAudioEntity);
             var isPerson = item is Person;
 
             // Logo

@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MediaBrowser.Providers.Books
 {
-    public class AudioBookMetadataService : MetadataService<AudioBook, SongInfo>
+    public class AudioBookMetadataService : MetadataService<AudioBookEntity, SongInfo>
     {
         public AudioBookMetadataService(
             IServerConfigurationManager serverConfigurationManager,
@@ -25,8 +25,8 @@ namespace MediaBrowser.Providers.Books
 
         /// <inheritdoc />
         protected override void MergeData(
-            MetadataResult<AudioBook> source,
-            MetadataResult<AudioBook> target,
+            MetadataResult<AudioBookEntity> source,
+            MetadataResult<AudioBookEntity> target,
             MetadataField[] lockedFields,
             bool replaceData,
             bool mergeMetadataSettings)

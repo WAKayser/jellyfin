@@ -15,7 +15,7 @@ using MediaBrowser.Controller.Channels;
 using MediaBrowser.Controller.Drawing;
 using MediaBrowser.Controller.Dto;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.LiveTv;
 using MediaBrowser.Controller.Persistence;
@@ -29,7 +29,7 @@ using Microsoft.Extensions.Logging;
 using Book = MediaBrowser.Controller.Entities.Book;
 using Episode = MediaBrowser.Controller.Entities.TV.Episode;
 using Movie = MediaBrowser.Controller.Entities.Movies.Movie;
-using MusicAlbum = MediaBrowser.Controller.Entities.Audio.MusicAlbum;
+using MusicAlbum = MediaBrowser.Controller.Entities.AudioEntity.MusicAlbum;
 using Person = MediaBrowser.Controller.Entities.Person;
 using Photo = MediaBrowser.Controller.Entities.Photo;
 using Season = MediaBrowser.Controller.Entities.TV.Season;
@@ -326,14 +326,14 @@ namespace Emby.Server.Implementations.Dto
             {
                 dto.AlbumCount = taggedItems.Count(i => i is MusicAlbum);
                 dto.MusicVideoCount = taggedItems.Count(i => i is MusicVideo);
-                dto.SongCount = taggedItems.Count(i => i is Audio);
+                dto.SongCount = taggedItems.Count(i => i is CommonAudioEntity);
             }
             else if (item is MusicGenre)
             {
                 dto.ArtistCount = taggedItems.Count(i => i is MusicArtist);
                 dto.AlbumCount = taggedItems.Count(i => i is MusicAlbum);
                 dto.MusicVideoCount = taggedItems.Count(i => i is MusicVideo);
-                dto.SongCount = taggedItems.Count(i => i is Audio);
+                dto.SongCount = taggedItems.Count(i => i is CommonAudioEntity);
             }
             else
             {
@@ -347,7 +347,7 @@ namespace Emby.Server.Implementations.Dto
                 dto.MusicVideoCount = taggedItems.Count(i => i is MusicVideo);
                 dto.SeriesCount = taggedItems.Count(i => i is Series);
                 dto.ProgramCount = taggedItems.Count(i => i is LiveTvProgram);
-                dto.SongCount = taggedItems.Count(i => i is Audio);
+                dto.SongCount = taggedItems.Count(i => i is CommonAudioEntity);
             }
 
             dto.ChildCount = taggedItems.Count;
@@ -910,7 +910,7 @@ namespace Emby.Server.Implementations.Dto
             }
 
             // Add audio info
-            var audio = item as Audio;
+            var audio = item as CommonAudioEntity;
             if (audio != null)
             {
                 dto.Album = audio.Album;

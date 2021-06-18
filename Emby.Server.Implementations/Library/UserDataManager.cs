@@ -15,7 +15,7 @@ using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.Persistence;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
-using AudioBook = MediaBrowser.Controller.Entities.AudioBook;
+using AudioBookEntity = MediaBrowser.Controller.Entities.AudioBookEntity;
 using Book = MediaBrowser.Controller.Entities.Book;
 
 namespace Emby.Server.Implementations.Library
@@ -222,7 +222,7 @@ namespace Emby.Server.Implementations.Library
             var hasRuntime = runtimeTicks > 0;
 
             // If a position has been reported, and if we know the duration
-            if (positionTicks > 0 && hasRuntime && item is not AudioBook && item is not Book)
+            if (positionTicks > 0 && hasRuntime && item is not AudioBookEntity && item is not Book)
             {
                 var pctIn = decimal.Divide(positionTicks, runtimeTicks) * 100;
 
@@ -248,7 +248,7 @@ namespace Emby.Server.Implementations.Library
                     }
                 }
             }
-            else if (positionTicks > 0 && hasRuntime && item is AudioBook)
+            else if (positionTicks > 0 && hasRuntime && item is AudioBookEntity)
             {
                 var playbackPositionInMinutes = TimeSpan.FromTicks(positionTicks).TotalMinutes;
                 var remainingTimeInMinutes = TimeSpan.FromTicks(runtimeTicks - positionTicks).TotalMinutes;

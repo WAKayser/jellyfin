@@ -10,7 +10,7 @@ using Jellyfin.Data.Enums;
 using MediaBrowser.Controller.Drawing;
 using MediaBrowser.Controller.Dto;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.LiveTv;
@@ -191,7 +191,7 @@ namespace Jellyfin.Api.Controllers
                     result.Artists = album.Artists;
                     result.AlbumArtist = album.AlbumArtist;
                     break;
-                case Audio song:
+                case CommonAudioEntity song:
                     result.AlbumArtist = song.AlbumArtists?[0];
                     result.Artists = song.Artists;
 

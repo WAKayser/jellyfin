@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using Jellyfin.Data.Entities;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Events;
 using MediaBrowser.Controller.Subtitles;
 using MediaBrowser.Model.Activity;

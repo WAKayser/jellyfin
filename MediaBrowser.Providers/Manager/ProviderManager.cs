@@ -17,7 +17,7 @@ using MediaBrowser.Controller.BaseItemManager;
 using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Dto;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.Providers;
@@ -31,7 +31,7 @@ using Priority_Queue;
 using Book = MediaBrowser.Controller.Entities.Book;
 using Episode = MediaBrowser.Controller.Entities.TV.Episode;
 using Movie = MediaBrowser.Controller.Entities.Movies.Movie;
-using MusicAlbum = MediaBrowser.Controller.Entities.Audio.MusicAlbum;
+using MusicAlbum = MediaBrowser.Controller.Entities.AudioEntity.MusicAlbum;
 using Season = MediaBrowser.Controller.Entities.TV.Season;
 using Series = MediaBrowser.Controller.Entities.TV.Series;
 
@@ -532,8 +532,8 @@ namespace MediaBrowser.Providers.Manager
                 GetPluginSummary<Episode>(),
                 GetPluginSummary<MusicAlbum>(),
                 GetPluginSummary<MusicArtist>(),
-                GetPluginSummary<Audio>(),
-                GetPluginSummary<AudioBook>(),
+                GetPluginSummary<CommonAudioEntity>(),
+                GetPluginSummary<AudioBookEntity>(),
                 GetPluginSummary<Studio>(),
                 GetPluginSummary<MusicVideo>(),
                 GetPluginSummary<Video>()

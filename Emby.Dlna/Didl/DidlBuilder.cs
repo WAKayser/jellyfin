@@ -13,7 +13,7 @@ using Jellyfin.Data.Entities;
 using MediaBrowser.Controller.Channels;
 using MediaBrowser.Controller.Drawing;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.MediaEncoding;
@@ -27,7 +27,7 @@ using Microsoft.Extensions.Logging;
 using Episode = MediaBrowser.Controller.Entities.TV.Episode;
 using Genre = MediaBrowser.Controller.Entities.Genre;
 using Movie = MediaBrowser.Controller.Entities.Movies.Movie;
-using MusicAlbum = MediaBrowser.Controller.Entities.Audio.MusicAlbum;
+using MusicAlbum = MediaBrowser.Controller.Entities.AudioEntity.MusicAlbum;
 using Season = MediaBrowser.Controller.Entities.TV.Season;
 using Series = MediaBrowser.Controller.Entities.TV.Series;
 using XmlAttribute = MediaBrowser.Model.Dlna.XmlAttribute;
@@ -1090,7 +1090,7 @@ namespace Emby.Dlna.Didl
             }
 
             // For audio tracks without art use album art if available.
-            if (item is Audio audioItem)
+            if (item is CommonAudioEntity audioItem)
             {
                 var album = audioItem.AlbumEntity;
                 return album != null && album.HasImage(ImageType.Primary)

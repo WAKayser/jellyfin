@@ -1,7 +1,7 @@
 #pragma warning disable CS1591
 
 using MediaBrowser.Controller.Configuration;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;

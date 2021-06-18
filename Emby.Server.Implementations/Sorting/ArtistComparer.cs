@@ -1,6 +1,6 @@
 using System;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Sorting;
 using MediaBrowser.Model.Querying;
 
@@ -27,7 +27,7 @@ namespace Emby.Server.Implementations.Sorting
         /// <returns>System.String.</returns>
         private static string? GetValue(BaseItem? x)
         {
-            if (!(x is Audio audio))
+            if (!(x is CommonAudioEntity audio))
             {
                 return string.Empty;
             }

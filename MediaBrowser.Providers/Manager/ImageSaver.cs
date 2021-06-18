@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Model.Configuration;
 using MediaBrowser.Model.Entities;
@@ -18,7 +18,7 @@ using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Net;
 using Microsoft.Extensions.Logging;
 using Episode = MediaBrowser.Controller.Entities.TV.Episode;
-using MusicAlbum = MediaBrowser.Controller.Entities.Audio.MusicAlbum;
+using MusicAlbum = MediaBrowser.Controller.Entities.AudioEntity.MusicAlbum;
 using Person = MediaBrowser.Controller.Entities.Person;
 using Season = MediaBrowser.Controller.Entities.TV.Season;
 
@@ -91,7 +91,7 @@ namespace MediaBrowser.Providers.Manager
                 throw new ArgumentNullException(nameof(mimeType));
             }
 
-            var saveLocally = item.SupportsLocalMetadata && item.IsSaveLocalMetadataEnabled() && !item.ExtraType.HasValue && !(item is Audio);
+            var saveLocally = item.SupportsLocalMetadata && item.IsSaveLocalMetadataEnabled() && !item.ExtraType.HasValue && !(item is CommonAudioEntity);
 
             if (type != ImageType.Primary && item is Episode)
             {

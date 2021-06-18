@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using MediaBrowser.Controller.Chapters;
 using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Library;
@@ -28,8 +28,8 @@ namespace MediaBrowser.Providers.MediaInfo
         ICustomMetadataProvider<Movie>,
         ICustomMetadataProvider<Trailer>,
         ICustomMetadataProvider<Video>,
-        ICustomMetadataProvider<Audio>,
-        ICustomMetadataProvider<AudioBook>,
+        ICustomMetadataProvider<CommonAudioEntity>,
+        ICustomMetadataProvider<AudioBookEntity>,
         IHasOrder,
         IForcedProvider,
         IPreRefreshProvider,
@@ -137,12 +137,12 @@ namespace MediaBrowser.Providers.MediaInfo
             return FetchVideoInfo(item, options, cancellationToken);
         }
 
-        public Task<ItemUpdateType> FetchAsync(Audio item, MetadataRefreshOptions options, CancellationToken cancellationToken)
+        public Task<ItemUpdateType> FetchAsync(CommonAudioEntity item, MetadataRefreshOptions options, CancellationToken cancellationToken)
         {
             return FetchAudioInfo(item, options, cancellationToken);
         }
 
-        public Task<ItemUpdateType> FetchAsync(AudioBook item, MetadataRefreshOptions options, CancellationToken cancellationToken)
+        public Task<ItemUpdateType> FetchAsync(AudioBookEntity item, MetadataRefreshOptions options, CancellationToken cancellationToken)
         {
             return FetchAudioInfo(item, options, cancellationToken);
         }
@@ -207,7 +207,7 @@ namespace MediaBrowser.Providers.MediaInfo
         }
 
         public Task<ItemUpdateType> FetchAudioInfo<T>(T item, MetadataRefreshOptions options, CancellationToken cancellationToken)
-            where T : Audio
+            where T : CommonAudioEntity
         {
             if (item.IsVirtualItem)
             {

@@ -13,7 +13,7 @@ using Jellyfin.Data.Entities;
 using Jellyfin.Data.Events;
 using MediaBrowser.Controller.Channels;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.Plugins;
 using MediaBrowser.Controller.Providers;

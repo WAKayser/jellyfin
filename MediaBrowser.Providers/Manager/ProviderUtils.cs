@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Extensions;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
@@ -135,7 +135,7 @@ namespace MediaBrowser.Providers.Manager
             {
                 if (replaceData || !target.RunTimeTicks.HasValue)
                 {
-                    if (!(target is Audio) && !(target is Video))
+                    if (!(target is CommonAudioEntity) && !(target is Video))
                     {
                         target.RunTimeTicks = source.RunTimeTicks;
                     }

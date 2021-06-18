@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
@@ -38,7 +38,7 @@ namespace MediaBrowser.Providers.Music
 
         /// <inheritdoc />
         protected override IList<BaseItem> GetChildrenForMetadataUpdates(MusicAlbum item)
-            => item.GetRecursiveChildren(i => i is Audio);
+            => item.GetRecursiveChildren(i => i is CommonAudioEntity);
 
         /// <inheritdoc />
         protected override ItemUpdateType UpdateMetadataFromChildren(MusicAlbum item, IList<BaseItem> children, bool isFullRefresh, ItemUpdateType currentUpdateType)
@@ -59,7 +59,7 @@ namespace MediaBrowser.Providers.Music
                     }
                 }
 
-                var songs = children.Cast<Audio>().ToArray();
+                var songs = children.Cast<CommonAudioEntity>().ToArray();
 
                 updateType |= SetAlbumArtistFromSongs(item, songs);
                 updateType |= SetArtistsFromSongs(item, songs);
@@ -68,7 +68,7 @@ namespace MediaBrowser.Providers.Music
             return updateType;
         }
 
-        private ItemUpdateType SetAlbumArtistFromSongs(MusicAlbum item, IEnumerable<Audio> songs)
+        private ItemUpdateType SetAlbumArtistFromSongs(MusicAlbum item, IEnumerable<CommonAudioEntity> songs)
         {
             var updateType = ItemUpdateType.None;
 
@@ -87,7 +87,7 @@ namespace MediaBrowser.Providers.Music
             return updateType;
         }
 
-        private ItemUpdateType SetArtistsFromSongs(MusicAlbum item, IEnumerable<Audio> songs)
+        private ItemUpdateType SetArtistsFromSongs(MusicAlbum item, IEnumerable<CommonAudioEntity> songs)
         {
             var updateType = ItemUpdateType.None;
 

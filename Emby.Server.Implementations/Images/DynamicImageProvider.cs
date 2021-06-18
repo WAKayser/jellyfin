@@ -10,7 +10,7 @@ using MediaBrowser.Common.Configuration;
 using MediaBrowser.Controller.Drawing;
 using MediaBrowser.Controller.Dto;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.Providers;
@@ -69,7 +69,7 @@ namespace Emby.Server.Implementations.Images
                     return season;
                 }
 
-                if (i is Audio audio)
+                if (i is CommonAudioEntity audio)
                 {
                     var album = audio.AlbumEntity;
                     if (album != null && album.HasImage(ImageType.Primary))

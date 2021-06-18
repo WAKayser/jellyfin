@@ -19,7 +19,7 @@ namespace Emby.Server.Implementations.Library.Resolvers.Audio
     /// <summary>
     /// Class AudioResolver.
     /// </summary>
-    public class AudioResolver : ItemResolver<MediaBrowser.Controller.Entities.Audio.Audio>, IMultiItemResolver
+    public class AudioResolver : ItemResolver<MediaBrowser.Controller.Entities.AudioEntity.CommonAudioEntity>, IMultiItemResolver
     {
         private readonly ILibraryManager LibraryManager;
 
@@ -46,7 +46,7 @@ namespace Emby.Server.Implementations.Library.Resolvers.Audio
             {
                 foreach (var item in result.Items)
                 {
-                    SetInitialItemValues((MediaBrowser.Controller.Entities.Audio.Audio)item, null);
+                    SetInitialItemValues((MediaBrowser.Controller.Entities.AudioEntity.CommonAudioEntity)item, null);
                 }
             }
 
@@ -61,7 +61,7 @@ namespace Emby.Server.Implementations.Library.Resolvers.Audio
         {
             if (string.Equals(collectionType, CollectionType.Books, StringComparison.OrdinalIgnoreCase))
             {
-                return ResolveMultipleAudio<AudioBook>(parent, files, directoryService, false, collectionType, true);
+                return ResolveMultipleAudio<AudioBookEntity>(parent, files, directoryService, false, collectionType, true);
             }
 
             return null;
@@ -71,8 +71,8 @@ namespace Emby.Server.Implementations.Library.Resolvers.Audio
         /// Resolves the specified args.
         /// </summary>
         /// <param name="args">The args.</param>
-        /// <returns>Entities.Audio.Audio.</returns>
-        protected override MediaBrowser.Controller.Entities.Audio.Audio Resolve(ItemResolveArgs args)
+        /// <returns>Entities.AudioEntiy.CommonAudioEntity.</returns>
+        protected override MediaBrowser.Controller.Entities.AudioEntity.CommonAudioEntity Resolve(ItemResolveArgs args)
         {
             // Return audio if the path is a file and has a matching extension
 
@@ -91,7 +91,7 @@ namespace Emby.Server.Implementations.Library.Resolvers.Audio
                     .Where(i => !LibraryManager.IgnoreFile(i, args.Parent))
                     .ToList();
 
-                return FindAudio<AudioBook>(args, args.Path, args.Parent, files, args.DirectoryService, collectionType, false);
+                return FindAudio<AudioBookEntity>(args, args.Path, args.Parent, files, args.DirectoryService, collectionType, false);
             }
 
             if (LibraryManager.IsAudioFile(args.Path))
@@ -112,7 +112,7 @@ namespace Emby.Server.Implementations.Library.Resolvers.Audio
                     return null;
                 }
 
-                MediaBrowser.Controller.Entities.Audio.Audio item = null;
+                MediaBrowser.Controller.Entities.AudioEntity.CommonAudioEntity item = null;
 
                 var isMusicCollectionType = string.Equals(collectionType, CollectionType.Music, StringComparison.OrdinalIgnoreCase);
 
@@ -121,11 +121,11 @@ namespace Emby.Server.Implementations.Library.Resolvers.Audio
                     args.Parent == null ||
                     isMusicCollectionType)
                 {
-                    item = new MediaBrowser.Controller.Entities.Audio.Audio();
+                    item = new MediaBrowser.Controller.Entities.AudioEntity.CommonAudioEntity();
                 }
                 else if (isBooksCollectionType)
                 {
-                    item = new AudioBook();
+                    item = new AudioBookEntity();
                 }
 
                 if (item != null)
@@ -142,7 +142,7 @@ namespace Emby.Server.Implementations.Library.Resolvers.Audio
         }
 
         private T FindAudio<T>(ItemResolveArgs args, string path, Folder parent, List<FileSystemMetadata> fileSystemEntries, IDirectoryService directoryService, string collectionType, bool parseName)
-            where T : MediaBrowser.Controller.Entities.Audio.Audio, new()
+            where T : MediaBrowser.Controller.Entities.AudioEntity.CommonAudioEntity, new()
         {
             // TODO: Allow GetMultiDiscMovie in here
             const bool supportsMultiVersion = false;
@@ -163,7 +163,7 @@ namespace Emby.Server.Implementations.Library.Resolvers.Audio
         }
 
         private MultiItemResolverResult ResolveMultipleAudio<T>(Folder parent, IEnumerable<FileSystemMetadata> fileSystemEntries, IDirectoryService directoryService, bool suppportMultiEditions, string collectionType, bool parseName)
-            where T : MediaBrowser.Controller.Entities.Audio.Audio, new()
+            where T : MediaBrowser.Controller.Entities.AudioEntity.CommonAudioEntity, new()
         {
             var files = new List<FileSystemMetadata>();
             var items = new List<BaseItem>();

@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 using MediaBrowser.Controller.Extensions;
 using Microsoft.Extensions.Logging;
 
-namespace MediaBrowser.Controller.Entities.Audio
+namespace MediaBrowser.Controller.Entities.AudioEntity
 {
     /// <summary>
     /// Class MusicGenre.

@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Extensions;
 using Microsoft.Extensions.Logging;
 
@@ -67,7 +67,7 @@ namespace MediaBrowser.Controller.Entities
             query.ExcludeItemTypes = new[]
             {
                 nameof(MusicVideo),
-                nameof(Entities.Audio.Audio),
+                nameof(Entities.AudioEntity.CommonAudioEntity),
                 nameof(MusicAlbum),
                 nameof(MusicArtist)
             };

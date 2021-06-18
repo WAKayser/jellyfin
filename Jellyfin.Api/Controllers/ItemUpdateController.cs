@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Jellyfin.Api.Constants;
 using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Entities;
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.LiveTv;
@@ -339,7 +339,7 @@ namespace Jellyfin.Api.Controllers
 
             switch (item)
             {
-                case Audio song:
+                case CommonAudioEntity song:
                     song.Album = request.Album;
                     break;
                 case MusicVideo musicVideo:

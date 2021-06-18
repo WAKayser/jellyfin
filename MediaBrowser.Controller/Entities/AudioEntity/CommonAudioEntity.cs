@@ -13,12 +13,12 @@ using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 
-namespace MediaBrowser.Controller.Entities.Audio
+namespace MediaBrowser.Controller.Entities.AudioEntity
 {
     /// <summary>
-    /// Class Audio.
+    /// Class AudioEntity.
     /// </summary>
-    public class Audio : BaseItem,
+    public class CommonAudioEntity : BaseItem,
         IHasAlbumArtist,
         IHasArtist,
         IHasMusicGenres,
@@ -33,7 +33,7 @@ namespace MediaBrowser.Controller.Entities.Audio
         [JsonIgnore]
         public IReadOnlyList<string> AlbumArtists { get; set; }
 
-        public Audio()
+        public CommonAudioEntity()
         {
             Artists = Array.Empty<string>();
             AlbumArtists = Array.Empty<string>();

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MediaBrowser.Controller.Library;
 
-namespace MediaBrowser.Controller.Entities.Audio
+namespace MediaBrowser.Controller.Entities.AudioEntity
 {
     public interface IHasAlbumArtist
     {

@@ -1,6 +1,6 @@
 #pragma warning disable CS1591
 
-using MediaBrowser.Controller.Entities.Audio;
+using MediaBrowser.Controller.Entities.AudioEntity;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Providers;
@@ -23,7 +23,7 @@ namespace MediaBrowser.Providers.Music
         public string UrlFormatString => Plugin.Instance.Configuration.Server + "/release-group/{0}";
 
         /// <inheritdoc />
-        public bool Supports(IHasProviderIds item) => item is Audio || item is MusicAlbum;
+        public bool Supports(IHasProviderIds item) => item is CommonAudioEntity || item is MusicAlbum;
     }
 
     public class MusicBrainzAlbumArtistExternalId : IExternalId
@@ -41,7 +41,7 @@ namespace MediaBrowser.Providers.Music
         public string UrlFormatString => Plugin.Instance.Configuration.Server + "/artist/{0}";
 
         /// <inheritdoc />
-        public bool Supports(IHasProviderIds item) => item is Audio;
+        public bool Supports(IHasProviderIds item) => item is CommonAudioEntity;
     }
 
     public class MusicBrainzAlbumExternalId : IExternalId
@@ -59,7 +59,7 @@ namespace MediaBrowser.Providers.Music
         public string UrlFormatString => Plugin.Instance.Configuration.Server + "/release/{0}";
 
         /// <inheritdoc />
-        public bool Supports(IHasProviderIds item) => item is Audio || item is MusicAlbum;
+        public bool Supports(IHasProviderIds item) => item is CommonAudioEntity || item is MusicAlbum;
     }
 
     public class MusicBrainzArtistExternalId : IExternalId
@@ -96,7 +96,7 @@ namespace MediaBrowser.Providers.Music
         public string UrlFormatString => Plugin.Instance.Configuration.Server + "/artist/{0}";
 
         /// <inheritdoc />
-        public bool Supports(IHasProviderIds item) => item is Audio || item is MusicAlbum;
+        public bool Supports(IHasProviderIds item) => item is CommonAudioEntity || item is MusicAlbum;
     }
 
     public class MusicBrainzTrackId : IExternalId
@@ -114,6 +114,6 @@ namespace MediaBrowser.Providers.Music
         public string UrlFormatString => Plugin.Instance.Configuration.Server + "/track/{0}";
 
         /// <inheritdoc />
-        public bool Supports(IHasProviderIds item) => item is Audio;
+        public bool Supports(IHasProviderIds item) => item is CommonAudioEntity;
     }
 }
