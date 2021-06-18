@@ -814,7 +814,7 @@ namespace MediaBrowser.Controller.Entities
         /// <summary>
         /// Finds a parent of a given type.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type.</typeparam>
         /// <returns>``0.</returns>
         public T FindParent<T>()
             where T : Folder
@@ -2086,7 +2086,7 @@ namespace MediaBrowser.Controller.Entities
         /// Adds a studio to the item.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentNullException">Studio must not be <c>null</c>.</exception>
         public void AddStudio(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -2122,7 +2122,7 @@ namespace MediaBrowser.Controller.Entities
         /// Adds a genre to the item.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentNullException">Genre must not be <c>null</c>.</exception>
         public void AddGenre(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -2145,8 +2145,7 @@ namespace MediaBrowser.Controller.Entities
         /// <param name="user">The user.</param>
         /// <param name="datePlayed">The date played.</param>
         /// <param name="resetPosition">if set to <c>true</c> [reset position].</param>
-        /// <returns>Task.</returns>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentNullException">User must not be <c>null</c>.</exception>
         public virtual void MarkPlayed(
             User user,
             DateTime? datePlayed,
@@ -2183,8 +2182,7 @@ namespace MediaBrowser.Controller.Entities
         /// Marks the unplayed.
         /// </summary>
         /// <param name="user">The user.</param>
-        /// <returns>Task.</returns>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentNullException">User must not be <c>null</c>.</exception>
         public virtual void MarkUnplayed(User user)
         {
             if (user == null)
@@ -2284,6 +2282,7 @@ namespace MediaBrowser.Controller.Entities
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="index">The index.</param>
+        /// <returns>a Task.</returns>
         public async Task DeleteImageAsync(ImageType type, int index)
         {
             var info = GetImageInfo(type, index);
@@ -2321,6 +2320,8 @@ namespace MediaBrowser.Controller.Entities
         /// <summary>
         /// Validates that images within the item are still on the filesystem.
         /// </summary>
+        /// <returns>a Bool.</returns>
+        /// <param name="directoryService">The directroy to be investigated.</param>
         public bool ValidateImages(IDirectoryService directoryService)
         {
             var allFiles = ImageInfos
@@ -2348,7 +2349,6 @@ namespace MediaBrowser.Controller.Entities
         /// <param name="imageType">Type of the image.</param>
         /// <param name="imageIndex">Index of the image.</param>
         /// <returns>System.String.</returns>
-        /// <exception cref="InvalidOperationException"> </exception>
         /// <exception cref="ArgumentNullException">Item is null.</exception>
         public string GetImagePath(ImageType imageType, int imageIndex)
             => GetImageInfo(imageType, imageIndex)?.Path;
@@ -2902,6 +2902,7 @@ namespace MediaBrowser.Controller.Entities
         /// Updates the official rating based on content and returns true or false indicating if it changed.
         /// </summary>
         /// <returns><c>true</c> if the rating was updated; otherwise <c>false</c>.</returns>
+        /// <param name="children">Items to be updated.</param>
         public bool UpdateRatingToItems(IList<BaseItem> children)
         {
             var currentOfficialRating = OfficialRating;
