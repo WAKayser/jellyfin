@@ -22,28 +22,26 @@ namespace MediaBrowser.Controller.Entities
     /// </summary>
     public class AggregateFolder : Folder
     {
+        /// <summary>
+        /// The _virtual children.
+        /// </summary>
+        private readonly ConcurrentBag<BaseItem> _virtualChildren = new ConcurrentBag<BaseItem>();
+
+        private readonly object _childIdsLock = new object();
         private bool _requiresRefresh;
+        private string[] physicalLocationsList;
+        private Guid[] _childrenIds = null;
 
         public AggregateFolder()
         {
-            PhysicalLocationsList = Array.Empty<string>();
+            SetPhysicalLocationsList(Array.Empty<string>());
         }
 
         [JsonIgnore]
         public override bool IsPhysicalRoot => true;
 
-        public override bool CanDelete()
-        {
-            return false;
-        }
-
         [JsonIgnore]
         public override bool SupportsPlayedStatus => false;
-
-        /// <summary>
-        /// The _virtual children.
-        /// </summary>
-        private readonly ConcurrentBag<BaseItem> _virtualChildren = new ConcurrentBag<BaseItem>();
 
         /// <summary>
         /// Gets the virtual children.
@@ -52,17 +50,33 @@ namespace MediaBrowser.Controller.Entities
         public ConcurrentBag<BaseItem> VirtualChildren => _virtualChildren;
 
         [JsonIgnore]
-        public override string[] PhysicalLocations => PhysicalLocationsList;
+        public override string[] PhysicalLocations
+        {
+            get
+            {
+                return GetPhysicalLocationsList();
+            }
+        }
 
-        public string[] PhysicalLocationsList { get; set; }
+        public string[] GetPhysicalLocationsList()
+        {
+            return physicalLocationsList;
+        }
+
+        public void SetPhysicalLocationsList(string[] value)
+        {
+            physicalLocationsList = value;
+        }
+
+        public override bool CanDelete()
+        {
+            return false;
+        }
 
         protected override FileSystemMetadata[] GetFileSystemChildren(IDirectoryService directoryService)
         {
             return CreateResolveArgs(directoryService, true).FileSystemChildren;
         }
-
-        private Guid[] _childrenIds = null;
-        private readonly object _childIdsLock = new object();
 
         protected override List<BaseItem> LoadChildren()
         {
@@ -144,7 +158,7 @@ namespace MediaBrowser.Controller.Entities
             _requiresRefresh = _requiresRefresh || !args.PhysicalLocations.SequenceEqual(PhysicalLocations);
             if (setPhysicalLocations)
             {
-                PhysicalLocationsList = args.PhysicalLocations;
+                SetPhysicalLocationsList(args.PhysicalLocations);
             }
 
             return args;
@@ -169,7 +183,7 @@ namespace MediaBrowser.Controller.Entities
         /// Adds the virtual child.
         /// </summary>
         /// <param name="child">The child.</param>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentNullException"> if child is <c>null</c>. </exception>
         public void AddVirtualChild(BaseItem child)
         {
             if (child == null)
