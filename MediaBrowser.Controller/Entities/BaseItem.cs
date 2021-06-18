@@ -45,6 +45,10 @@ namespace MediaBrowser.Controller.Entities
         public static readonly string[] SupportedImageExtensions
             = new[] { ".png", ".jpg", ".jpeg", ".tbn", ".gif" };
 
+        public static readonly char[] SlugReplaceChars = { '?', '/', '&' };
+
+        public static readonly char SlugChar = '-';
+
         private static readonly List<string> _supportedExtensions = new List<string>(SupportedImageExtensions)
         {
             ".nfo",
@@ -72,9 +76,6 @@ namespace MediaBrowser.Controller.Entities
             RemoteTrailers = Array.Empty<MediaUrl>();
             ExtraIds = Array.Empty<Guid>();
         }
-
-        public static readonly char[] SlugReplaceChars = { '?', '/', '&' };
-        public static char SlugChar = '-';
 
         /// <summary>
         /// The trailer folder name.

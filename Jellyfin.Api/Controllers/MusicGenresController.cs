@@ -169,26 +169,17 @@ namespace Jellyfin.Api.Controllers
         private T? GetItemFromSlugName<T>(ILibraryManager libraryManager, string name, DtoOptions dtoOptions)
             where T : BaseItem, new()
         {
-            var result = libraryManager.GetItemList(new InternalItemsQuery
-            {
-                Name = name.Replace(BaseItem.SlugChar, '&'),
-                IncludeItemTypes = new[] { typeof(T).Name },
-                DtoOptions = dtoOptions
-            }).OfType<T>().FirstOrDefault();
+            T? result = null;
 
-            result ??= libraryManager.GetItemList(new InternalItemsQuery
+            foreach (char slugReplace in BaseItem.SlugReplaceChars)
             {
-                Name = name.Replace(BaseItem.SlugChar, '/'),
-                IncludeItemTypes = new[] { typeof(T).Name },
-                DtoOptions = dtoOptions
-            }).OfType<T>().FirstOrDefault();
-
-            result ??= libraryManager.GetItemList(new InternalItemsQuery
-            {
-                Name = name.Replace(BaseItem.SlugChar, '?'),
-                IncludeItemTypes = new[] { typeof(T).Name },
-                DtoOptions = dtoOptions
-            }).OfType<T>().FirstOrDefault();
+                result ??= libraryManager.GetItemList(new InternalItemsQuery
+                {
+                    Name = name.Replace(BaseItem.SlugChar, slugReplace),
+                    IncludeItemTypes = new[] { typeof(T).Name },
+                    DtoOptions = dtoOptions
+                }).OfType<T>().FirstOrDefault();
+            }
 
             return result;
         }
