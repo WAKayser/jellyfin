@@ -189,9 +189,9 @@ namespace Jellyfin.Api.Controllers
                 TranscodeReasons = transcodeReasons,
                 AudioStreamIndex = audioStreamIndex,
                 VideoStreamIndex = videoStreamIndex,
-                Context = context ?? EncodingContext.Static,
-                StreamOptions = streamOptions
+                Context = context ?? EncodingContext.Static
             };
+            streamingRequest.SetStreamOptions(streamOptions);
 
             return await _audioHelper.GetAudioStream(_transcodingJobType, streamingRequest).ConfigureAwait(false);
         }
@@ -355,8 +355,8 @@ namespace Jellyfin.Api.Controllers
                 AudioStreamIndex = audioStreamIndex,
                 VideoStreamIndex = videoStreamIndex,
                 Context = context ?? EncodingContext.Static,
-                StreamOptions = streamOptions
             };
+            streamingRequest.SetStreamOptions(streamOptions);
 
             return await _audioHelper.GetAudioStream(_transcodingJobType, streamingRequest).ConfigureAwait(false);
         }

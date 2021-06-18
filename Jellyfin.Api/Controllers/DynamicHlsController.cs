@@ -264,9 +264,9 @@ namespace Jellyfin.Api.Controllers
                 AudioStreamIndex = audioStreamIndex,
                 VideoStreamIndex = videoStreamIndex,
                 Context = context ?? EncodingContext.Streaming,
-                StreamOptions = streamOptions,
                 EnableAdaptiveBitrateStreaming = enableAdaptiveBitrateStreaming
             };
+            streamingRequest.SetStreamOptions(streamOptions);
 
             return await _dynamicHlsHelper.GetMasterHlsPlaylist(TranscodingJobType, streamingRequest, enableAdaptiveBitrateStreaming).ConfigureAwait(false);
         }
@@ -431,9 +431,9 @@ namespace Jellyfin.Api.Controllers
                 AudioStreamIndex = audioStreamIndex,
                 VideoStreamIndex = videoStreamIndex,
                 Context = context ?? EncodingContext.Streaming,
-                StreamOptions = streamOptions,
                 EnableAdaptiveBitrateStreaming = enableAdaptiveBitrateStreaming
             };
+            streamingRequest.SetStreamOptions(streamOptions);
 
             return await _dynamicHlsHelper.GetMasterHlsPlaylist(TranscodingJobType, streamingRequest, enableAdaptiveBitrateStreaming).ConfigureAwait(false);
         }
@@ -594,8 +594,8 @@ namespace Jellyfin.Api.Controllers
                 AudioStreamIndex = audioStreamIndex,
                 VideoStreamIndex = videoStreamIndex,
                 Context = context ?? EncodingContext.Streaming,
-                StreamOptions = streamOptions
             };
+            streamingRequest.SetStreamOptions(streamOptions);
 
             return await GetVariantPlaylistInternal(streamingRequest, "main", cancellationTokenSource)
                 .ConfigureAwait(false);
@@ -759,8 +759,8 @@ namespace Jellyfin.Api.Controllers
                 AudioStreamIndex = audioStreamIndex,
                 VideoStreamIndex = videoStreamIndex,
                 Context = context ?? EncodingContext.Streaming,
-                StreamOptions = streamOptions
             };
+            streamingRequest.SetStreamOptions(streamOptions);
 
             return await GetVariantPlaylistInternal(streamingRequest, "main", cancellationTokenSource)
                 .ConfigureAwait(false);
@@ -929,8 +929,8 @@ namespace Jellyfin.Api.Controllers
                 AudioStreamIndex = audioStreamIndex,
                 VideoStreamIndex = videoStreamIndex,
                 Context = context ?? EncodingContext.Streaming,
-                StreamOptions = streamOptions
             };
+            streamingRequest.SetStreamOptions(streamOptions);
 
             return await GetDynamicSegment(streamingRequest, segmentId)
                 .ConfigureAwait(false);
@@ -1101,8 +1101,8 @@ namespace Jellyfin.Api.Controllers
                 AudioStreamIndex = audioStreamIndex,
                 VideoStreamIndex = videoStreamIndex,
                 Context = context ?? EncodingContext.Streaming,
-                StreamOptions = streamOptions
             };
+            streamingRequest.SetStreamOptions(streamOptions);
 
             return await GetDynamicSegment(streamingRequest, segmentId)
                 .ConfigureAwait(false);

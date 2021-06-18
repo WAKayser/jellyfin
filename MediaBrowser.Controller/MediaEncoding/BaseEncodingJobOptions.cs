@@ -1,4 +1,4 @@
-﻿#nullable disable
+#nullable disable
 
 #pragma warning disable CS1591
 
@@ -10,6 +10,17 @@ namespace MediaBrowser.Controller.MediaEncoding
 {
     public class BaseEncodingJobOptions
     {
+        private Dictionary<string, string> streamOptions;
+
+        public BaseEncodingJobOptions()
+        {
+            EnableAutoStreamCopy = true;
+            AllowVideoStreamCopy = true;
+            AllowAudioStreamCopy = true;
+            Context = EncodingContext.Streaming;
+            SetStreamOptions(new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
+        }
+
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
@@ -168,7 +179,15 @@ namespace MediaBrowser.Controller.MediaEncoding
 
         public EncodingContext Context { get; set; }
 
-        public Dictionary<string, string> StreamOptions { get; set; }
+        public Dictionary<string, string> GetStreamOptions()
+        {
+            return streamOptions;
+        }
+
+        public void SetStreamOptions(Dictionary<string, string> value)
+        {
+            streamOptions = value;
+        }
 
         public string GetOption(string qualifier, string name)
         {
@@ -184,21 +203,12 @@ namespace MediaBrowser.Controller.MediaEncoding
 
         public string GetOption(string name)
         {
-            if (StreamOptions.TryGetValue(name, out var value))
+            if (GetStreamOptions().TryGetValue(name, out var value))
             {
                 return value;
             }
 
             return null;
-        }
-
-        public BaseEncodingJobOptions()
-        {
-            EnableAutoStreamCopy = true;
-            AllowVideoStreamCopy = true;
-            AllowAudioStreamCopy = true;
-            Context = EncodingContext.Streaming;
-            StreamOptions = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
     }
 }

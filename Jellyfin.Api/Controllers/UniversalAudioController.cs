@@ -225,9 +225,9 @@ namespace Jellyfin.Api.Controllers
                     EnableMpegtsM2TsMode = false,
                     TranscodeReasons = mediaSource.TranscodeReasons == null ? null : string.Join(',', mediaSource.TranscodeReasons.Select(i => i.ToString()).ToArray()),
                     Context = EncodingContext.Static,
-                    StreamOptions = new Dictionary<string, string>(),
                     EnableAdaptiveBitrateStreaming = true
                 };
+                dynamicHlsRequestDto.SetStreamOptions(new Dictionary<string, string>());
 
                 return await _dynamicHlsHelper.GetMasterHlsPlaylist(TranscodingJobType.Hls, dynamicHlsRequestDto, true)
                     .ConfigureAwait(false);

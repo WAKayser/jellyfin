@@ -259,11 +259,11 @@ namespace Jellyfin.Api.Controllers
                 AudioStreamIndex = audioStreamIndex,
                 VideoStreamIndex = videoStreamIndex,
                 Context = context ?? EncodingContext.Streaming,
-                StreamOptions = streamOptions,
                 MaxHeight = maxHeight,
                 MaxWidth = maxWidth,
                 EnableSubtitlesInManifest = enableSubtitlesInManifest ?? true
             };
+            streamingRequest.SetStreamOptions(streamOptions);
 
             // CTS lifecycle is managed internally.
             var cancellationTokenSource = new CancellationTokenSource();
