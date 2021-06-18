@@ -2,15 +2,20 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace MediaBrowser.Controller.Providers
 {
     public class AlbumInfo : ItemLookupInfo
     {
+        private Dictionary<string, string>? _artistProviderIds;
+
+        private Collection<SongInfo>? _songInfos;
+
         public AlbumInfo()
         {
-            ArtistProviderIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            SongInfos = new List<SongInfo>();
+            SetArtistProviderIds(new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
+            SetSongInfos(new Collection<SongInfo>());
             AlbumArtists = Array.Empty<string>();
         }
 
@@ -21,11 +26,31 @@ namespace MediaBrowser.Controller.Providers
         public IReadOnlyList<string> AlbumArtists { get; set; }
 
         /// <summary>
-        /// Gets or sets the artist provider ids.
+        /// Gets the artist provider ids.
         /// </summary>
-        /// <value>The artist provider ids.</value>
-        public Dictionary<string, string> ArtistProviderIds { get; set; }
+        /// <returns>The artist provider ids.</returns>
+        public Dictionary<string, string> GetArtistProviderIds()
+        {
+            return _artistProviderIds!;
+        }
 
-        public List<SongInfo> SongInfos { get; set; }
+        /// <summary>
+        /// Gets the artist provider ids.
+        /// </summary>
+        /// <param name="value">The artist provider ids.</param>
+        public void SetArtistProviderIds(Dictionary<string, string> value)
+        {
+            _artistProviderIds = value;
+        }
+
+        public Collection<SongInfo> GetSongInfos()
+        {
+            return _songInfos!;
+        }
+
+        public void SetSongInfos(Collection<SongInfo> value)
+        {
+            _songInfos = value;
+        }
     }
 }

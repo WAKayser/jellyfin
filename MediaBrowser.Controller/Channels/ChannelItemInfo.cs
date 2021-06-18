@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Model.Channels;
 using MediaBrowser.Model.Dto;
@@ -17,7 +18,7 @@ namespace MediaBrowser.Controller.Channels
         {
             MediaSources = new List<MediaSourceInfo>();
             TrailerTypes = new List<TrailerType>();
-            Genres = new List<string>();
+            Genres = new Collection<string>();
             Studios = new List<string>();
             People = new List<PersonInfo>();
             Tags = new List<string>();
@@ -40,7 +41,7 @@ namespace MediaBrowser.Controller.Channels
 
         public string Overview { get; set; }
 
-        public List<string> Genres { get; set; }
+        public Collection<string> Genres { get; set; }
 
         public List<string> Studios { get; set; }
 

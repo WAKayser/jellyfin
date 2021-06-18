@@ -3,6 +3,7 @@
 #pragma warning disable CS1591
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using MediaBrowser.Model.Channels;
 
 namespace MediaBrowser.Controller.Channels
