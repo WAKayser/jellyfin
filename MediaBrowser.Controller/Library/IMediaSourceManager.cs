@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,21 +30,21 @@ namespace MediaBrowser.Controller.Library
         /// </summary>
         /// <param name="itemId">The item identifier.</param>
         /// <returns>IEnumerable&lt;MediaStream&gt;.</returns>
-        List<MediaStream> GetMediaStreams(Guid itemId);
+        Collection<MediaStream> GetMediaStreams(Guid itemId);
 
         /// <summary>
         /// Gets the media streams.
         /// </summary>
         /// <param name="mediaSourceId">The media source identifier.</param>
         /// <returns>IEnumerable&lt;MediaStream&gt;.</returns>
-        List<MediaStream> GetMediaStreams(string mediaSourceId);
+        Collection<MediaStream> GetMediaStreams(string mediaSourceId);
 
         /// <summary>
         /// Gets the media streams.
         /// </summary>
         /// <param name="query">The query.</param>
         /// <returns>IEnumerable&lt;MediaStream&gt;.</returns>
-        List<MediaStream> GetMediaStreams(MediaStreamQuery query);
+        Collection<MediaStream> GetMediaStreams(MediaStreamQuery query);
 
         /// <summary>
         /// Gets the media attachments.
@@ -67,7 +68,7 @@ namespace MediaBrowser.Controller.Library
         /// <summary>
         /// Gets the static media sources.
         /// </summary>
-        List<MediaSourceInfo> GetStaticMediaSources(BaseItem item, bool enablePathSubstitution, User user = null);
+        Collection<MediaSourceInfo> GetStaticMediaSources(BaseItem item, bool enablePathSubstitution, User user = null);
 
         /// <summary>
         /// Gets the static media source.

@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Model.Entities;
@@ -13,7 +14,7 @@ namespace MediaBrowser.Controller.Providers
     public class MetadataResult<T>
     {
         // Images aren't always used so the allocation is a waste a lot of the time
-        private List<LocalImageInfo> _images;
+        private Collection<LocalImageInfo> _images;
         private List<(string url, ImageType type)> _remoteImages;
 
         public MetadataResult()
@@ -21,9 +22,9 @@ namespace MediaBrowser.Controller.Providers
             ResultLanguage = "en";
         }
 
-        public List<LocalImageInfo> Images
+        public Collection<LocalImageInfo> Images
         {
-            get => _images ??= new List<LocalImageInfo>();
+            get => _images ??= new Collection<LocalImageInfo>();
             set => _images = value;
         }
 

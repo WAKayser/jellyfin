@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -48,9 +49,8 @@ namespace MediaBrowser.Providers.MediaInfo
             var audio = (CommonAudioEntity)item;
 
             var imageStreams =
-                audio.GetMediaStreams(MediaStreamType.EmbeddedImage)
-                    .Where(i => i.Type == MediaStreamType.EmbeddedImage)
-                    .ToList();
+                (Collection<MediaStream>)audio.GetMediaStreams(MediaStreamType.EmbeddedImage)
+                    .Where(i => i.Type == MediaStreamType.EmbeddedImage);
 
             // Can't extract if we didn't find a video stream in the file
             if (imageStreams.Count == 0)
@@ -61,7 +61,7 @@ namespace MediaBrowser.Providers.MediaInfo
             return GetImage((CommonAudioEntity)item, imageStreams, cancellationToken);
         }
 
-        public async Task<DynamicImageResponse> GetImage(CommonAudioEntity item, List<MediaStream> imageStreams, CancellationToken cancellationToken)
+        public async Task<DynamicImageResponse> GetImage(CommonAudioEntity item, Collection<MediaStream> imageStreams, CancellationToken cancellationToken)
         {
             var path = GetAudioImagePath(item);
 

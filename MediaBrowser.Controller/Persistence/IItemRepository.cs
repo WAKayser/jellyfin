@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Model.Dto;
@@ -73,7 +74,7 @@ namespace MediaBrowser.Controller.Persistence
         /// </summary>
         /// <param name="query">The query.</param>
         /// <returns>IEnumerable{MediaStream}.</returns>
-        List<MediaStream> GetMediaStreams(MediaStreamQuery query);
+        Collection<MediaStream> GetMediaStreams(MediaStreamQuery query);
 
         /// <summary>
         /// Saves the media streams.
@@ -81,7 +82,7 @@ namespace MediaBrowser.Controller.Persistence
         /// <param name="id">The identifier.</param>
         /// <param name="streams">The streams.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        void SaveMediaStreams(Guid id, List<MediaStream> streams, CancellationToken cancellationToken);
+        void SaveMediaStreams(Guid id, Collection<MediaStream> streams, CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the media attachments.

@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -97,9 +98,9 @@ namespace Emby.Server.Implementations.Library
 
             if (!string.IsNullOrEmpty(cacheKey))
             {
-                var newList = new List<MediaStream>();
-                newList.AddRange(mediaStreams.Where(i => i.Type == MediaStreamType.Video).Take(1));
-                newList.AddRange(mediaStreams.Where(i => i.Type == MediaStreamType.Audio).Take(1));
+                var newList = new Collection<MediaStream>();
+                newList = (Collection<MediaStream>)newList.Concat(mediaStreams.Where(i => i.Type == MediaStreamType.Video).Take(1));
+                newList = (Collection<MediaStream>)newList.Concat(mediaStreams.Where(i => i.Type == MediaStreamType.Audio).Take(1));
 
                 foreach (var stream in newList)
                 {

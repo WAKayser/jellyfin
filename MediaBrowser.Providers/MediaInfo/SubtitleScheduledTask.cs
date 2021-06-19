@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -200,7 +201,7 @@ namespace MediaBrowser.Providers.MediaInfo
                     cancellationToken).ConfigureAwait(false);
 
             // Rescan
-            if (downloadedLanguages.Count > 0)
+            if (downloadedLanguages.Count() > 0)
             {
                 await video.RefreshMetadata(cancellationToken).ConfigureAwait(false);
                 return false;

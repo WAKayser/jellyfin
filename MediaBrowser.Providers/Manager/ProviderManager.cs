@@ -160,7 +160,7 @@ namespace MediaBrowser.Providers.Manager
         public async Task SaveImage(BaseItem item, string url, ImageType type, int? imageIndex, CancellationToken cancellationToken)
         {
             var httpClient = _httpClientFactory.CreateClient(NamedClient.Default);
-            using var response = await httpClient.GetAsync(url, cancellationToken).ConfigureAwait(false);
+            using var response = await httpClient.GetAsync(new Uri(url), cancellationToken).ConfigureAwait(false);
 
             if (response.StatusCode != HttpStatusCode.OK)
             {

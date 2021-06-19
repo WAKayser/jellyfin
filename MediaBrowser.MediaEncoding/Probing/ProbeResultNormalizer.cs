@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -54,11 +55,10 @@ namespace MediaBrowser.MediaEncoding.Probing
 
             var internalStreams = data.Streams ?? Array.Empty<MediaStreamInfo>();
 
-            info.MediaStreams = internalStreams.Select(s => GetMediaStream(isAudio, s, data.Format))
+            info.MediaStreams = (Collection<MediaStream>)internalStreams.Select(s => GetMediaStream(isAudio, s, data.Format))
                 .Where(i => i != null)
                 // Drop subtitle streams if we don't know the codec because it will just cause failures if we don't know how to handle them
-                .Where(i => i.Type != MediaStreamType.Subtitle || !string.IsNullOrWhiteSpace(i.Codec))
-                .ToList();
+                .Where(i => i.Type != MediaStreamType.Subtitle || !string.IsNullOrWhiteSpace(i.Codec));
 
             info.MediaAttachments = internalStreams.Select(GetMediaAttachment)
                 .Where(i => i != null)

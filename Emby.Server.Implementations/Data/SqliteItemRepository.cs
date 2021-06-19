@@ -5,6 +5,7 @@
 using System;
 using System.Buffers.Text;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -5825,7 +5826,7 @@ AND Type = @InternalPersonType)");
             return item;
         }
 
-        public List<MediaStream> GetMediaStreams(MediaStreamQuery query)
+        public Collection<MediaStream> GetMediaStreams(MediaStreamQuery query)
         {
             CheckDisposed();
 
@@ -5850,7 +5851,7 @@ AND Type = @InternalPersonType)");
 
             using (var connection = GetConnection(true))
             {
-                var list = new List<MediaStream>();
+                var list = new Collection<MediaStream>();
 
                 using (var statement = PrepareStatement(connection, cmdText))
                 {
@@ -5876,7 +5877,7 @@ AND Type = @InternalPersonType)");
             }
         }
 
-        public void SaveMediaStreams(Guid id, List<MediaStream> streams, CancellationToken cancellationToken)
+        public void SaveMediaStreams(Guid id, Collection<MediaStream> streams, CancellationToken cancellationToken)
         {
             CheckDisposed();
 
@@ -5907,7 +5908,7 @@ AND Type = @InternalPersonType)");
             }
         }
 
-        private void InsertMediaStreams(byte[] idBlob, List<MediaStream> streams, IDatabaseConnection db)
+        private void InsertMediaStreams(byte[] idBlob, Collection<MediaStream> streams, IDatabaseConnection db)
         {
             const int Limit = 10;
             var startIndex = 0;

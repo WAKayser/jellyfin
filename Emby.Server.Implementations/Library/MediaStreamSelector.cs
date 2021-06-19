@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Jellyfin.Data.Enums;
 using MediaBrowser.Model.Entities;
@@ -12,10 +13,9 @@ namespace Emby.Server.Implementations.Library
 {
     public static class MediaStreamSelector
     {
-        public static int? GetDefaultAudioStreamIndex(List<MediaStream> streams, string[] preferredLanguages, bool preferDefaultTrack)
+        public static int? GetDefaultAudioStreamIndex(Collection<MediaStream> streams, string[] preferredLanguages, bool preferDefaultTrack)
         {
-            streams = GetSortedStreams(streams, MediaStreamType.Audio, preferredLanguages)
-               .ToList();
+            streams = (Collection<MediaStream>)GetSortedStreams(streams, MediaStreamType.Audio, preferredLanguages);
 
             if (preferDefaultTrack)
             {
@@ -38,13 +38,12 @@ namespace Emby.Server.Implementations.Library
         }
 
         public static int? GetDefaultSubtitleStreamIndex(
-            List<MediaStream> streams,
+            Collection<MediaStream> streams,
             string[] preferredLanguages,
             SubtitlePlaybackMode mode,
             string audioTrackLanguage)
         {
-            streams = GetSortedStreams(streams, MediaStreamType.Subtitle, preferredLanguages)
-                .ToList();
+            streams = (Collection<MediaStream>)GetSortedStreams(streams, MediaStreamType.Subtitle, preferredLanguages);
 
             MediaStream stream = null;
 
@@ -119,7 +118,7 @@ namespace Emby.Server.Implementations.Library
         }
 
         public static void SetSubtitleStreamScores(
-            List<MediaStream> streams,
+            Collection<MediaStream> streams,
             string[] preferredLanguages,
             SubtitlePlaybackMode mode,
             string audioTrackLanguage)
@@ -129,8 +128,7 @@ namespace Emby.Server.Implementations.Library
                 return;
             }
 
-            streams = GetSortedStreams(streams, MediaStreamType.Subtitle, preferredLanguages)
-                .ToList();
+            streams = (Collection<MediaStream>)GetSortedStreams(streams, MediaStreamType.Subtitle, preferredLanguages);
 
             var filteredStreams = new List<MediaStream>();
 

@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -87,15 +88,15 @@ namespace MediaBrowser.Controller.LiveTv
             return new List<BaseItem>();
         }
 
-        public override List<MediaSourceInfo> GetMediaSources(bool enablePathSubstitution)
+        public override Collection<MediaSourceInfo> GetMediaSources(bool enablePathSubstitution)
         {
-            var list = new List<MediaSourceInfo>();
+            var list = new Collection<MediaSourceInfo>();
 
             var info = new MediaSourceInfo
             {
                 Id = Id.ToString("N", CultureInfo.InvariantCulture),
                 Protocol = PathProtocol ?? MediaProtocol.File,
-                MediaStreams = new List<MediaStream>(),
+                MediaStreams = new Collection<MediaStream>(),
                 Name = Name,
                 Path = Path,
                 RunTimeTicks = RunTimeTicks,
@@ -108,9 +109,9 @@ namespace MediaBrowser.Controller.LiveTv
             return list;
         }
 
-        public override List<MediaStream> GetMediaStreams()
+        public override Collection<MediaStream> GetMediaStreams()
         {
-            return new List<MediaStream>();
+            return new Collection<MediaStream>();
         }
 
         protected override string GetInternalMetadataPath(string basePath)

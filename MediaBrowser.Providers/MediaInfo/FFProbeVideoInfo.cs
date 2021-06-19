@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -118,7 +119,7 @@ namespace MediaBrowser.Providers.MediaInfo
                 cancellationToken.ThrowIfCancellationRequested();
             }
 
-            await Fetch(item, cancellationToken, mediaInfoResult, blurayDiscInfo, options).ConfigureAwait(false);
+            await Fetch(item, mediaInfoResult, blurayDiscInfo, options, cancellationToken).ConfigureAwait(false);
 
             return ItemUpdateType.MetadataImport;
         }
@@ -156,12 +157,12 @@ namespace MediaBrowser.Providers.MediaInfo
 
         protected async Task Fetch(
             Video video,
-            CancellationToken cancellationToken,
             Model.MediaInfo.MediaInfo mediaInfo,
             BlurayDiscInfo blurayInfo,
-            MetadataRefreshOptions options)
+            MetadataRefreshOptions options,
+            CancellationToken cancellationToken)
         {
-            List<MediaStream> mediaStreams;
+            Collection<MediaStream> mediaStreams;
             IReadOnlyList<MediaAttachment> mediaAttachments;
             ChapterInfo[] chapters;
 
@@ -205,7 +206,7 @@ namespace MediaBrowser.Providers.MediaInfo
             }
             else
             {
-                mediaStreams = new List<MediaStream>();
+                mediaStreams = new Collection<MediaStream>();
                 mediaAttachments = Array.Empty<MediaAttachment>();
                 chapters = Array.Empty<ChapterInfo>();
             }
@@ -274,7 +275,7 @@ namespace MediaBrowser.Providers.MediaInfo
             }
         }
 
-        private void FetchBdInfo(BaseItem item, ref ChapterInfo[] chapters, List<MediaStream> mediaStreams, BlurayDiscInfo blurayInfo)
+        private void FetchBdInfo(BaseItem item, ref ChapterInfo[] chapters, Collection<MediaStream> mediaStreams, BlurayDiscInfo blurayInfo)
         {
             var video = (Video)item;
 
@@ -299,7 +300,7 @@ namespace MediaBrowser.Providers.MediaInfo
 
                 // Fill video properties from the BDInfo result
                 mediaStreams.Clear();
-                mediaStreams.AddRange(blurayInfo.MediaStreams);
+                mediaStreams = (Collection<MediaStream>)mediaStreams.Concat(blurayInfo.MediaStreams);
 
                 if (blurayInfo.RunTimeTicks.HasValue && blurayInfo.RunTimeTicks.Value > 0)
                 {
@@ -502,7 +503,7 @@ namespace MediaBrowser.Providers.MediaInfo
         /// <returns>Task.</returns>
         private async Task AddExternalSubtitles(
             Video video,
-            List<MediaStream> currentStreams,
+            Collection<MediaStream> currentStreams,
             MetadataRefreshOptions options,
             CancellationToken cancellationToken)
         {
@@ -550,7 +551,7 @@ namespace MediaBrowser.Providers.MediaInfo
                     _logger,
                     _subtitleManager).DownloadSubtitles(
                         video,
-                        currentStreams.Concat(externalSubtitleStreams).ToList(),
+                        (Collection<MediaStream>)currentStreams.Concat(externalSubtitleStreams),
                         skipIfEmbeddedSubtitlesPresent,
                         skipIfAudioTrackMatches,
                         requirePerfectMatch,
@@ -568,7 +569,7 @@ namespace MediaBrowser.Providers.MediaInfo
 
             video.SubtitleFiles = externalSubtitleStreams.Select(i => i.Path).ToArray();
 
-            currentStreams.AddRange(externalSubtitleStreams);
+            currentStreams = (Collection<MediaStream>)currentStreams.Concat(externalSubtitleStreams);
         }
 
         /// <summary>

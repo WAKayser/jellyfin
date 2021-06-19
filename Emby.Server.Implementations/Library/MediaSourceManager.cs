@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -79,7 +80,7 @@ namespace Emby.Server.Implementations.Library
             _providers = providers.ToArray();
         }
 
-        public List<MediaStream> GetMediaStreams(MediaStreamQuery query)
+        public Collection<MediaStream> GetMediaStreams(MediaStreamQuery query)
         {
             var list = _itemRepo.GetMediaStreams(query);
 
@@ -106,7 +107,7 @@ namespace Emby.Server.Implementations.Library
             return false;
         }
 
-        public List<MediaStream> GetMediaStreams(string mediaSourceId)
+        public Collection<MediaStream> GetMediaStreams(string mediaSourceId)
         {
             var list = GetMediaStreams(new MediaStreamQuery
             {
@@ -116,7 +117,7 @@ namespace Emby.Server.Implementations.Library
             return GetMediaStreamsForItem(list);
         }
 
-        public List<MediaStream> GetMediaStreams(Guid itemId)
+        public Collection<MediaStream> GetMediaStreams(Guid itemId)
         {
             var list = GetMediaStreams(new MediaStreamQuery
             {
@@ -126,7 +127,7 @@ namespace Emby.Server.Implementations.Library
             return GetMediaStreamsForItem(list);
         }
 
-        private List<MediaStream> GetMediaStreamsForItem(List<MediaStream> streams)
+        private Collection<MediaStream> GetMediaStreamsForItem(Collection<MediaStream> streams)
         {
             foreach (var stream in streams)
             {
@@ -328,7 +329,7 @@ namespace Emby.Server.Implementations.Library
             return sources.FirstOrDefault(i => string.Equals(i.Id, mediaSourceId, StringComparison.OrdinalIgnoreCase));
         }
 
-        public List<MediaSourceInfo> GetStaticMediaSources(BaseItem item, bool enablePathSubstitution, User user = null)
+        public Collection<MediaSourceInfo> GetStaticMediaSources(BaseItem item, bool enablePathSubstitution, User user = null)
         {
             if (item == null)
             {
@@ -686,9 +687,9 @@ namespace Emby.Server.Implementations.Library
 
             if (isLiveStream && !string.IsNullOrEmpty(cacheKey))
             {
-                var newList = new List<MediaStream>();
-                newList.AddRange(mediaStreams.Where(i => i.Type == MediaStreamType.Video).Take(1));
-                newList.AddRange(mediaStreams.Where(i => i.Type == MediaStreamType.Audio).Take(1));
+                var newList = new Collection<MediaStream>();
+                newList.ToList().AddRange(mediaStreams.Where(i => i.Type == MediaStreamType.Video).Take(1));
+                newList.ToList().AddRange(mediaStreams.Where(i => i.Type == MediaStreamType.Audio).Take(1));
 
                 foreach (var stream in newList)
                 {

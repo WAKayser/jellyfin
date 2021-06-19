@@ -1,6 +1,7 @@
-﻿#pragma warning disable CA1002 // Do not expose generic lists
+#pragma warning disable CA1002 // Do not expose generic lists
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Globalization;
 using MediaBrowser.Providers.MediaInfo;
@@ -58,7 +59,7 @@ namespace Jellyfin.Providers.Tests.MediaInfo
 
         [Theory]
         [MemberData(nameof(AddExternalSubtitleStreams_GivenMixedFilenames_ReturnsValidSubtitles_TestData))]
-        public void AddExternalSubtitleStreams_GivenMixedFilenames_ReturnsValidSubtitles(List<MediaStream> streams, string videoPath, int startIndex, string[] files, MediaStream[] expectedResult)
+        public void AddExternalSubtitleStreams_GivenMixedFilenames_ReturnsValidSubtitles(Collection<MediaStream> streams, string videoPath, int startIndex, string[] files, MediaStream[] expectedResult)
         {
             new SubtitleResolver(Mock.Of<ILocalizationManager>()).AddExternalSubtitleStreams(streams, videoPath, startIndex, files);
 

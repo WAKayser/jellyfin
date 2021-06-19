@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -169,7 +170,7 @@ namespace Emby.Server.Implementations.LiveTv.TunerHosts
             {
                 Path = path,
                 Protocol = protocol,
-                MediaStreams = new List<MediaStream>
+                MediaStreams = new Collection<MediaStream>
                 {
                     new MediaStream
                     {

@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 
@@ -20,8 +21,10 @@ namespace MediaBrowser.Controller.Entities
         /// <summary>
         /// Gets the media sources.
         /// </summary>
-        List<MediaSourceInfo> GetMediaSources(bool enablePathSubstitution);
+        /// <param name="enablePathSubstitution">Enable path following.</param>
+        /// <returns>returns a collection.</returns>
+        Collection<MediaSourceInfo> GetMediaSources(bool enablePathSubstitution);
 
-        List<MediaStream> GetMediaStreams();
+        Collection<MediaStream> GetMediaStreams();
     }
 }

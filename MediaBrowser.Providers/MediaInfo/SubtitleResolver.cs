@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Providers;
@@ -19,13 +20,13 @@ namespace MediaBrowser.Providers.MediaInfo
             _localization = localization;
         }
 
-        public List<MediaStream> GetExternalSubtitleStreams(
+        public Collection<MediaStream> GetExternalSubtitleStreams(
             Video video,
             int startIndex,
             IDirectoryService directoryService,
             bool clearCache)
         {
-            var streams = new List<MediaStream>();
+            var streams = new Collection<MediaStream>();
 
             if (!video.IsFileProtocol)
             {
@@ -73,7 +74,7 @@ namespace MediaBrowser.Providers.MediaInfo
         }
 
         public void AddExternalSubtitleStreams(
-            List<MediaStream> streams,
+            Collection<MediaStream> streams,
             string videoPath,
             int startIndex,
             IReadOnlyList<string> files)
@@ -180,7 +181,7 @@ namespace MediaBrowser.Providers.MediaInfo
         }
 
         private void AddExternalSubtitleStreams(
-            List<MediaStream> streams,
+            Collection<MediaStream> streams,
             string folder,
             string videoPath,
             int startIndex,

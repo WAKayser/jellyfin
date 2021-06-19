@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
@@ -18,7 +18,7 @@ namespace MediaBrowser.Providers.Plugins.Tmdb
     /// <summary>
     /// Manager class for abstracting the TMDb API client library.
     /// </summary>
-    public class TmdbClientManager
+    public class TmdbClientManager : IDisposable
     {
         private const int CacheDurationInHours = 1;
 
@@ -242,7 +242,7 @@ namespace MediaBrowser.Providers.Plugins.Tmdb
 
             await EnsureClientConfigAsync().ConfigureAwait(false);
 
-            var group = await GetSeriesGroupAsync(tvShowId, displayOrder, language, imageLanguages, cancellationToken);
+            var group = await GetSeriesGroupAsync(tvShowId, displayOrder, language, imageLanguages, cancellationToken).ConfigureAwait(false);
             if (group != null)
             {
                 var season = group.Groups.Find(s => s.Order == seasonNumber);
@@ -531,6 +531,31 @@ namespace MediaBrowser.Providers.Plugins.Tmdb
         private Task EnsureClientConfigAsync()
         {
             return !_tmDbClient.HasConfig ? _tmDbClient.GetConfigAsync() : Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Dispose default function.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Dispose function with boolean to do extra logic.
+        /// </summary>
+        /// <param name="disposing">See dispose c# docs.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // free managed resources
+                _memoryCache.Dispose();
+                _tmDbClient.Dispose();
+            }
+
+            // free native resources if there are any.
         }
     }
 }

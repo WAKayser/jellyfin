@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -2472,7 +2473,7 @@ namespace Emby.Server.Implementations.Library
         }
 
         public void AddExternalSubtitleStreams(
-            List<MediaStream> streams,
+            Collection<MediaStream> streams,
             string videoPath,
             string[] files)
         {

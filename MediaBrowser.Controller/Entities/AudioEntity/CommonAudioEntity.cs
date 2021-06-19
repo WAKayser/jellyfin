@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -126,7 +127,7 @@ namespace MediaBrowser.Controller.Entities.AudioEntity
             return base.GetBlockUnratedType();
         }
 
-        public List<MediaStream> GetMediaStreams(MediaStreamType type)
+        public Collection<MediaStream> GetMediaStreams(MediaStreamType type)
         {
             return MediaSourceManager.GetMediaStreams(new MediaStreamQuery
             {

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -122,8 +123,7 @@ namespace MediaBrowser.Providers.Manager
             // Next run metadata providers
             if (refreshOptions.MetadataRefreshMode != MetadataRefreshMode.None)
             {
-                var providers = GetProviders(item, libraryOptions, refreshOptions, isFirstRefresh, requiresRefresh)
-                    .ToList();
+                var providers = (Collection<IMetadataProvider>)GetProviders(item, libraryOptions, refreshOptions, isFirstRefresh, requiresRefresh);
 
                 if (providers.Count > 0 || isFirstRefresh || requiresRefresh)
                 {
@@ -158,7 +158,7 @@ namespace MediaBrowser.Providers.Manager
             // Next run remote image providers, but only if local image providers didn't throw an exception
             if (!localImagesFailed && refreshOptions.ImageRefreshMode != MetadataRefreshMode.ValidationOnly)
             {
-                var providers = GetNonLocalImageProviders(item, allImageProviders, refreshOptions).ToList();
+                var providers = (Collection<IImageProvider>)GetNonLocalImageProviders(item, allImageProviders, refreshOptions);
 
                 if (providers.Count > 0)
                 {
@@ -506,10 +506,15 @@ namespace MediaBrowser.Providers.Manager
         /// Gets the providers.
         /// </summary>
         /// <returns>IEnumerable{`0}.</returns>
+        /// <param name="item">Base Item.</param>
+        /// <param name="libraryOptions">Library Options.</param>
+        /// <param name="options">Metadata Refresh Options.</param>
+        /// <param name="isFirstRefresh">to find first refresh.</param>
+        /// <param name="requiresRefresh">Bool.</param>
         protected IEnumerable<IMetadataProvider> GetProviders(BaseItem item, LibraryOptions libraryOptions, MetadataRefreshOptions options, bool isFirstRefresh, bool requiresRefresh)
         {
             // Get providers to refresh
-            var providers = ((ProviderManager)ProviderManager).GetMetadataProviders<TItemType>(item, libraryOptions).ToList();
+            var providers = (Collection<IMetadataProvider<TItemType>>)((ProviderManager)ProviderManager).GetMetadataProviders<TItemType>(item, libraryOptions);
 
             var metadataRefreshMode = options.MetadataRefreshMode;
 
@@ -535,7 +540,7 @@ namespace MediaBrowser.Providers.Manager
 
                 if (providersWithChanges.Count == 0)
                 {
-                    providers = new List<IMetadataProvider<TItemType>>();
+                    providers = new Collection<IMetadataProvider<TItemType>>();
                 }
                 else
                 {
@@ -548,7 +553,7 @@ namespace MediaBrowser.Providers.Manager
                     var anyLocalPreRefreshProvidersChanged = providersWithChanges.OfType<IPreRefreshProvider>()
                         .Any();
 
-                    providers = providers.Where(i =>
+                    providers = (Collection<IMetadataProvider<TItemType>>)providers.ToList().Where(i =>
                     {
                         // If any provider reports a change, always run local ones as well
                         if (i is ILocalMetadataProvider)
@@ -569,7 +574,7 @@ namespace MediaBrowser.Providers.Manager
 
                         // Run custom refresh providers if they report a change or any remote providers change
                         return anyRemoteProvidersChanged || providersWithChanges.Contains(i);
-                    }).ToList();
+                    });
                 }
             }
 
@@ -617,7 +622,7 @@ namespace MediaBrowser.Providers.Manager
             MetadataResult<TItemType> metadata,
             TIdType id,
             MetadataRefreshOptions options,
-            List<IMetadataProvider> providers,
+            Collection<IMetadataProvider> providers,
             ItemImageProvider imageService,
             CancellationToken cancellationToken)
         {

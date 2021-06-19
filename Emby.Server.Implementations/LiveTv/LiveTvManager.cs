@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text.Json;
@@ -312,7 +313,7 @@ namespace Emby.Server.Implementations.LiveTv
             {
                 if (isVideo)
                 {
-                    mediaSource.MediaStreams.AddRange(new List<MediaStream>
+                    mediaSource.MediaStreams = (Collection<MediaStream>)mediaSource.MediaStreams.Concat(new Collection<MediaStream>
                     {
                         new MediaStream
                         {
@@ -333,7 +334,7 @@ namespace Emby.Server.Implementations.LiveTv
                 }
                 else
                 {
-                    mediaSource.MediaStreams.AddRange(new List<MediaStream>
+                    mediaSource.MediaStreams = (Collection<MediaStream>)mediaSource.MediaStreams.Concat(new Collection<MediaStream>
                     {
                         new MediaStream
                         {

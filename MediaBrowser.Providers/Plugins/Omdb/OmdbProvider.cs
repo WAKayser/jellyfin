@@ -21,7 +21,10 @@ using MediaBrowser.Model.IO;
 
 namespace MediaBrowser.Providers.Plugins.Omdb
 {
-    public class OmdbProvider
+    /// <summary>
+    /// OMDB Provider Class.
+    /// </summary>
+    public partial class OmdbProvider
     {
         private readonly IFileSystem _fileSystem;
         private readonly IServerConfigurationManager _configurationManager;
@@ -79,15 +82,15 @@ namespace MediaBrowser.Providers.Plugins.Omdb
                 item.CriticRating = tomatoScore;
             }
 
-            if (!string.IsNullOrEmpty(result.imdbVotes)
-                && int.TryParse(result.imdbVotes, NumberStyles.Number, _usCulture, out var voteCount)
+            if (!string.IsNullOrEmpty(result.ImdbVotes)
+                && int.TryParse(result.ImdbVotes, NumberStyles.Number, _usCulture, out var voteCount)
                 && voteCount >= 0)
             {
                 // item.VoteCount = voteCount;
             }
 
-            if (!string.IsNullOrEmpty(result.imdbRating)
-                && float.TryParse(result.imdbRating, NumberStyles.Any, _usCulture, out var imdbRating)
+            if (!string.IsNullOrEmpty(result.ImdbRating)
+                && float.TryParse(result.ImdbRating, NumberStyles.Any, _usCulture, out var imdbRating)
                 && imdbRating >= 0)
             {
                 item.CommunityRating = imdbRating;
@@ -98,9 +101,9 @@ namespace MediaBrowser.Providers.Plugins.Omdb
                 item.HomePageUrl = result.Website;
             }
 
-            if (!string.IsNullOrWhiteSpace(result.imdbID))
+            if (!string.IsNullOrWhiteSpace(result.ImdbID))
             {
-                item.SetProviderId(MetadataProvider.Imdb, result.imdbID);
+                item.SetProviderId(MetadataProvider.Imdb, result.ImdbID);
             }
 
             ParseAdditionalMetadata(itemResult, result);
@@ -129,7 +132,7 @@ namespace MediaBrowser.Providers.Plugins.Omdb
             {
                 foreach (var episode in seasonResult.Episodes)
                 {
-                    if (string.Equals(episodeImdbId, episode.imdbID, StringComparison.OrdinalIgnoreCase))
+                    if (string.Equals(episodeImdbId, episode.ImdbID, StringComparison.OrdinalIgnoreCase))
                     {
                         result = episode;
                         break;
@@ -180,15 +183,15 @@ namespace MediaBrowser.Providers.Plugins.Omdb
                 item.CriticRating = tomatoScore;
             }
 
-            if (!string.IsNullOrEmpty(result.imdbVotes)
-                && int.TryParse(result.imdbVotes, NumberStyles.Number, _usCulture, out var voteCount)
+            if (!string.IsNullOrEmpty(result.ImdbVotes)
+                && int.TryParse(result.ImdbVotes, NumberStyles.Number, _usCulture, out var voteCount)
                 && voteCount >= 0)
             {
                 // item.VoteCount = voteCount;
             }
 
-            if (!string.IsNullOrEmpty(result.imdbRating)
-                && float.TryParse(result.imdbRating, NumberStyles.Any, _usCulture, out var imdbRating)
+            if (!string.IsNullOrEmpty(result.ImdbRating)
+                && float.TryParse(result.ImdbRating, NumberStyles.Any, _usCulture, out var imdbRating)
                 && imdbRating >= 0)
             {
                 item.CommunityRating = imdbRating;
@@ -199,9 +202,9 @@ namespace MediaBrowser.Providers.Plugins.Omdb
                 item.HomePageUrl = result.Website;
             }
 
-            if (!string.IsNullOrWhiteSpace(result.imdbID))
+            if (!string.IsNullOrWhiteSpace(result.ImdbID))
             {
-                item.SetProviderId(MetadataProvider.Imdb, result.imdbID);
+                item.SetProviderId(MetadataProvider.Imdb, result.ImdbID);
             }
 
             ParseAdditionalMetadata(itemResult, result);
@@ -213,14 +216,14 @@ namespace MediaBrowser.Providers.Plugins.Omdb
         {
             var path = await EnsureItemInfo(imdbId, cancellationToken).ConfigureAwait(false);
             await using var stream = File.OpenRead(path);
-            return await JsonSerializer.DeserializeAsync<RootObject>(stream, _jsonOptions, cancellationToken);
+            return await JsonSerializer.DeserializeAsync<RootObject>(stream, _jsonOptions, cancellationToken).ConfigureAwait(false);
         }
 
         internal async Task<SeasonRootObject> GetSeasonRootObject(string imdbId, int seasonId, CancellationToken cancellationToken)
         {
             var path = await EnsureSeasonInfo(imdbId, seasonId, cancellationToken).ConfigureAwait(false);
             await using var stream = File.OpenRead(path);
-            return await JsonSerializer.DeserializeAsync<SeasonRootObject>(stream, _jsonOptions, cancellationToken);
+            return await JsonSerializer.DeserializeAsync<SeasonRootObject>(stream, _jsonOptions, cancellationToken).ConfigureAwait(false);
         }
 
         internal static bool IsValidSeries(Dictionary<string, string> seriesProviderIds)
@@ -228,10 +231,7 @@ namespace MediaBrowser.Providers.Plugins.Omdb
             if (seriesProviderIds.TryGetValue(MetadataProvider.Imdb.ToString(), out string id) && !string.IsNullOrEmpty(id))
             {
                 // This check should ideally never be necessary but we're seeing some cases of this and haven't tracked them down yet.
-                if (!string.IsNullOrWhiteSpace(id))
-                {
-                    return true;
-                }
+                return true;
             }
 
             return false;
@@ -338,7 +338,7 @@ namespace MediaBrowser.Providers.Plugins.Omdb
 
         public static Task<HttpResponseMessage> GetOmdbResponse(HttpClient httpClient, string url, CancellationToken cancellationToken)
         {
-            return httpClient.GetAsync(url, cancellationToken);
+            return httpClient.GetAsync(new Uri(url), cancellationToken);
         }
 
         internal string GetDataFilePath(string imdbId)
@@ -455,11 +455,11 @@ namespace MediaBrowser.Providers.Plugins.Omdb
         {
             public string Title { get; set; }
 
-            public string seriesID { get; set; }
+            public string SeriesID { get; set; }
 
             public int? Season { get; set; }
 
-            public int? totalSeasons { get; set; }
+            public int? TotalSeasons { get; set; }
 
             public RootObject[] Episodes { get; set; }
 
@@ -500,11 +500,11 @@ namespace MediaBrowser.Providers.Plugins.Omdb
 
             public string Metascore { get; set; }
 
-            public string imdbRating { get; set; }
+            public string ImdbRating { get; set; }
 
-            public string imdbVotes { get; set; }
+            public string ImdbVotes { get; set; }
 
-            public string imdbID { get; set; }
+            public string ImdbID { get; set; }
 
             public string Type { get; set; }
 
@@ -537,13 +537,6 @@ namespace MediaBrowser.Providers.Plugins.Omdb
 
                 return null;
             }
-        }
-
-        public class OmdbRating
-        {
-            public string Source { get; set; }
-
-            public string Value { get; set; }
         }
     }
 }

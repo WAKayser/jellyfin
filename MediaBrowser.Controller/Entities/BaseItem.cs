@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -1162,7 +1163,7 @@ namespace MediaBrowser.Controller.Entities
             return PlayAccess.Full;
         }
 
-        public virtual List<MediaStream> GetMediaStreams()
+        public virtual Collection<MediaStream> GetMediaStreams()
         {
             return MediaSourceManager.GetMediaStreams(new MediaStreamQuery
             {
@@ -1175,12 +1176,11 @@ namespace MediaBrowser.Controller.Entities
             return false;
         }
 
-        public virtual List<MediaSourceInfo> GetMediaSources(bool enablePathSubstitution)
+        public virtual Collection<MediaSourceInfo> GetMediaSources(bool enablePathSubstitution)
         {
             if (SourceType == SourceType.Channel)
             {
-                var sources = ChannelManager.GetStaticMediaSources(this, CancellationToken.None)
-                           .ToList();
+                var sources = (Collection<MediaSourceInfo>)ChannelManager.GetStaticMediaSources(this, CancellationToken.None);
 
                 if (sources.Count > 0)
                 {
@@ -1189,7 +1189,7 @@ namespace MediaBrowser.Controller.Entities
             }
 
             var list = GetAllItemsForMediaSources();
-            var result = list.Select(i => GetVersionInfo(enablePathSubstitution, i.Item1, i.Item2)).ToList();
+            var result = (Collection<MediaSourceInfo>)list.Select(i => GetVersionInfo(enablePathSubstitution, i.Item1, i.Item2));
 
             if (IsActiveRecording())
             {
@@ -1199,7 +1199,7 @@ namespace MediaBrowser.Controller.Entities
                 }
             }
 
-            return result.OrderBy(i =>
+            return (Collection<MediaSourceInfo>)result.OrderBy(i =>
             {
                 if (i.VideoType == VideoType.VideoFile)
                 {
@@ -1213,8 +1213,7 @@ namespace MediaBrowser.Controller.Entities
                 var stream = i.VideoStream;
 
                 return stream == null || stream.Width == null ? 0 : stream.Width.Value;
-            })
-            .ToList();
+            });
         }
 
         protected virtual List<Tuple<BaseItem, MediaSourceType>> GetAllItemsForMediaSources()

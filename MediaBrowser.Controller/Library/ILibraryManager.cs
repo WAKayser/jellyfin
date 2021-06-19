@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 using Emby.Naming.Common;
@@ -587,7 +588,7 @@ namespace MediaBrowser.Controller.Library
         int GetCount(InternalItemsQuery query);
 
         void AddExternalSubtitleStreams(
-            List<MediaStream> streams,
+            Collection<MediaStream> streams,
             string videoPath,
             string[] files);
 
