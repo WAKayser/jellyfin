@@ -50,13 +50,13 @@ namespace MediaBrowser.Model.Entities
                 throw new ArgumentNullException(nameof(instance));
             }
 
-            if (instance.ProviderIds == null)
+            if (instance.GetProviderId() == null)
             {
                 id = null;
                 return false;
             }
 
-            var foundProviderId = instance.ProviderIds.TryGetValue(name, out id);
+            var foundProviderId = instance.GetProviderId().TryGetValue(name, out id);
             // This occurs when searching with Identify (and possibly in other places)
             if (string.IsNullOrEmpty(id))
             {
@@ -115,18 +115,22 @@ namespace MediaBrowser.Model.Entities
                 throw new ArgumentNullException(nameof(instance));
             }
 
+            var copy = instance.GetProviderId();
+
             // If it's null remove the key from the dictionary
             if (string.IsNullOrEmpty(value))
             {
-                instance.ProviderIds?.Remove(name);
+                copy.Remove(name);
             }
             else
             {
                 // Ensure it exists
-                instance.ProviderIds ??= new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                copy ??= new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-                instance.ProviderIds[name] = value;
+                copy[name] = value;
             }
+
+            instance.SetProviderId(copy);
         }
 
         /// <summary>

@@ -168,7 +168,7 @@ namespace MediaBrowser.XbmcMetadata.Savers
 
         protected virtual IEnumerable<string> GetTagsUsed(BaseItem item)
         {
-            foreach (var providerKey in item.ProviderIds.Keys)
+            foreach (var providerKey in item.GetProviderId().Keys)
             {
                 var providerIdTagName = GetTagForProviderKey(providerKey);
                 if (!_commonTags.Contains(providerIdTagName))
@@ -737,11 +737,11 @@ namespace MediaBrowser.XbmcMetadata.Savers
                 writtenProviderIds.Add(MetadataProvider.TvRage.ToString());
             }
 
-            if (item.ProviderIds != null)
+            if (item.GetProviderId() != null)
             {
-                foreach (var providerKey in item.ProviderIds.Keys)
+                foreach (var providerKey in item.GetProviderId().Keys)
                 {
-                    var providerId = item.ProviderIds[providerKey];
+                    var providerId = item.GetProviderId()[providerKey];
                     if (!string.IsNullOrEmpty(providerId) && !writtenProviderIds.Contains(providerKey))
                     {
                         try

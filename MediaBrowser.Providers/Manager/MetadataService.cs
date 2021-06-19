@@ -217,15 +217,15 @@ namespace MediaBrowser.Providers.Manager
             switch (lookupInfo)
             {
                 case EpisodeInfo episodeInfo:
-                    episodeInfo.SeriesProviderIds = result.ProviderIds;
-                    episodeInfo.ProviderIds.Clear();
+                    episodeInfo.SeriesProviderIds = result.GetProviderId();
+                    episodeInfo.SetProviderId(new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
                     break;
                 case SeasonInfo seasonInfo:
-                    seasonInfo.SeriesProviderIds = result.ProviderIds;
-                    seasonInfo.ProviderIds.Clear();
+                    seasonInfo.SeriesProviderIds = result.GetProviderId();
+                    seasonInfo.SetProviderId(new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
                     break;
                 default:
-                    lookupInfo.ProviderIds = result.ProviderIds;
+                    lookupInfo.SetProviderId(result.GetProviderId());
                     lookupInfo.Name = result.Name;
                     lookupInfo.Year = result.ProductionYear;
                     break;
@@ -840,14 +840,14 @@ namespace MediaBrowser.Providers.Manager
         private void MergeNewData(TItemType source, TIdType lookupInfo)
         {
             // Copy new provider id's that may have been obtained
-            foreach (var providerId in source.ProviderIds)
+            foreach (var providerId in source.GetProviderId())
             {
                 var key = providerId.Key;
 
                 // Don't replace existing Id's.
-                if (!lookupInfo.ProviderIds.ContainsKey(key))
+                if (!lookupInfo.GetProviderId().ContainsKey(key))
                 {
-                    lookupInfo.ProviderIds[key] = providerId.Value;
+                    lookupInfo.SetProviderIdValue(key, providerId.Value);
                 }
             }
         }

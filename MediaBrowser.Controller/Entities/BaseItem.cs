@@ -95,6 +95,8 @@ namespace MediaBrowser.Controller.Entities
 
         private string _sortName;
 
+        private ItemImageInfo[] imageInfos;
+
         /// <summary>
         /// Extra types that should be counted and displayed as "Special Features" in the UI.
         /// </summary>
@@ -112,51 +114,19 @@ namespace MediaBrowser.Controller.Entities
         private Guid[] _themeSongIds;
         private Guid[] _themeVideoIds;
 
+        private Dictionary<string, string> _providerIds;
+
         protected BaseItem()
         {
             Tags = Array.Empty<string>();
             Genres = Array.Empty<string>();
             Studios = Array.Empty<string>();
-            ProviderIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            SetProviderId(new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
             LockedFields = Array.Empty<MetadataField>();
-            ImageInfos = Array.Empty<ItemImageInfo>();
+            SetImageInfos(Array.Empty<ItemImageInfo>());
             ProductionLocations = Array.Empty<string>();
             RemoteTrailers = Array.Empty<MediaUrl>();
             ExtraIds = Array.Empty<Guid>();
-        }
-
-        [JsonIgnore]
-        public Guid[] ThemeSongIds
-        {
-            get
-            {
-                return _themeSongIds ??= GetExtras()
-                    .Where(extra => extra.ExtraType == Model.Entities.ExtraType.ThemeSong)
-                    .Select(song => song.Id)
-                    .ToArray();
-            }
-
-            private set
-            {
-                _themeSongIds = value;
-            }
-        }
-
-        [JsonIgnore]
-        public Guid[] ThemeVideoIds
-        {
-            get
-            {
-                return _themeVideoIds ??= GetExtras()
-                    .Where(extra => extra.ExtraType == Model.Entities.ExtraType.ThemeVideo)
-                    .Select(song => song.Id)
-                    .ToArray();
-            }
-
-            private set
-            {
-                _themeVideoIds = value;
-            }
         }
 
         [JsonIgnore]
@@ -171,9 +141,6 @@ namespace MediaBrowser.Controller.Entities
 
         [JsonIgnore]
         public string Tagline { get; set; }
-
-        [JsonIgnore]
-        public virtual ItemImageInfo[] ImageInfos { get; set; }
 
         [JsonIgnore]
         public bool IsVirtualItem { get; set; }
@@ -768,13 +735,6 @@ namespace MediaBrowser.Controller.Entities
         [JsonIgnore]
         public virtual bool SupportsThemeMedia => false;
 
-        /// <summary>
-        /// Gets or sets the provider ids.
-        /// </summary>
-        /// <value>The provider ids.</value>
-        [JsonIgnore]
-        public Dictionary<string, string> ProviderIds { get; set; }
-
         [JsonIgnore]
         public virtual Folder LatestItemsIndexContainer => null;
 
@@ -850,6 +810,32 @@ namespace MediaBrowser.Controller.Entities
 
         public virtual bool SupportsExternalTransfer => false;
 
+        public Guid[] GetThemeSongIds()
+        {
+            return _themeSongIds ??= GetExtras()
+                .Where(extra => extra.ExtraType == Model.Entities.ExtraType.ThemeSong)
+                .Select(song => song.Id)
+                .ToArray();
+        }
+
+        private void SetThemeSongIds(Guid[] value)
+        {
+            _themeSongIds = value;
+        }
+
+        public Guid[] GetThemeVideoIds()
+        {
+            return _themeVideoIds ??= GetExtras()
+                .Where(extra => extra.ExtraType == Model.Entities.ExtraType.ThemeVideo)
+                .Select(song => song.Id)
+                .ToArray();
+        }
+
+        private void SetThemeVideoIds(Guid[] value)
+        {
+            _themeVideoIds = value;
+        }
+
         public bool IsPathProtocol(MediaProtocol protocol)
         {
             var current = PathProtocol;
@@ -899,6 +885,44 @@ namespace MediaBrowser.Controller.Entities
         {
             var ownerId = OwnerId;
             return ownerId.Equals(Guid.Empty) ? null : LibraryManager.GetItemById(ownerId);
+        }
+
+        /// <summary>
+        /// Gets or sets the provider ids.
+        /// </summary>
+        /// <value>The provider ids.</value>
+        /// <param name="providerIds">Set the ID.</param>
+        public void SetProviderId(Dictionary<string, string> providerIds)
+        {
+            _providerIds = providerIds;
+        }
+
+        public Dictionary<string, string> GetProviderId() => _providerIds;
+
+        public void SetProviderIdValue(string name, string value)
+        {
+            // If it's null remove the key from the dictionary
+            if (string.IsNullOrEmpty(value))
+            {
+                _providerIds!.Remove(name);
+            }
+            else
+            {
+                // Ensure it exists
+                _providerIds ??= new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+                _providerIds[name] = value;
+            }
+        }
+
+        public virtual ItemImageInfo[] GetImageInfos()
+        {
+            return imageInfos;
+        }
+
+        public void SetImageInfos(ItemImageInfo[] value)
+        {
+            imageInfos = value;
         }
 
         public virtual bool CanDelete()
@@ -1650,7 +1674,7 @@ namespace MediaBrowser.Controller.Entities
 
             var newThemeVideoIds = newThemeVideos.Select(i => i.Id).ToArray();
 
-            var themeVideosChanged = !item.ThemeVideoIds.SequenceEqual(newThemeVideoIds);
+            var themeVideosChanged = !item.GetThemeVideoIds().SequenceEqual(newThemeVideoIds);
 
             var ownerId = item.Id;
 
@@ -1675,7 +1699,7 @@ namespace MediaBrowser.Controller.Entities
             await Task.WhenAll(tasks).ConfigureAwait(false);
 
             // They are expected to be sorted by SortName
-            item.ThemeVideoIds = newThemeVideos.OrderBy(i => i.SortName).Select(i => i.Id).ToArray();
+            item.SetThemeVideoIds(newThemeVideos.OrderBy(i => i.SortName).Select(i => i.Id).ToArray());
 
             return themeVideosChanged;
         }
@@ -1688,7 +1712,7 @@ namespace MediaBrowser.Controller.Entities
             var newThemeSongs = LoadThemeSongs(fileSystemChildren, options.DirectoryService);
             var newThemeSongIds = newThemeSongs.Select(i => i.Id).ToArray();
 
-            var themeSongsChanged = !item.ThemeSongIds.SequenceEqual(newThemeSongIds);
+            var themeSongsChanged = !item.GetThemeSongIds().SequenceEqual(newThemeSongIds);
 
             var ownerId = item.Id;
 
@@ -1713,7 +1737,7 @@ namespace MediaBrowser.Controller.Entities
             await Task.WhenAll(tasks).ConfigureAwait(false);
 
             // They are expected to be sorted by SortName
-            item.ThemeSongIds = newThemeSongs.OrderBy(i => i.SortName).Select(i => i.Id).ToArray();
+            item.SetThemeSongIds(newThemeSongs.OrderBy(i => i.SortName).Select(i => i.Id).ToArray());
 
             return themeSongsChanged;
         }
@@ -2062,13 +2086,13 @@ namespace MediaBrowser.Controller.Entities
         }
 
         public virtual string GetClientTypeName()
-         {
-             if (IsFolder && SourceType == SourceType.Channel && !(this is Channel))
-             {
-                 return "ChannelFolderItem";
-             }
+        {
+            if (IsFolder && SourceType == SourceType.Channel && !(this is Channel))
+            {
+                return "ChannelFolderItem";
+            }
 
-             return GetType().Name;
+            return GetType().Name;
         }
 
         public BaseItemKind GetBaseItemKind()
@@ -2309,12 +2333,12 @@ namespace MediaBrowser.Controller.Entities
             }
             else
             {
-                var current = ImageInfos;
+                var current = GetImageInfos();
                 var currentCount = current.Length;
                 var newArr = new ItemImageInfo[currentCount + 1];
                 current.CopyTo(newArr, 0);
                 newArr[currentCount] = image;
-                ImageInfos = newArr;
+                SetImageInfos(newArr);
             }
         }
 
@@ -2329,7 +2353,7 @@ namespace MediaBrowser.Controller.Entities
 
             if (image == null)
             {
-                ImageInfos = ImageInfos.Concat(new[] { GetImageInfo(file, type) }).ToArray();
+                SetImageInfos(GetImageInfos().Concat(new[] { GetImageInfo(file, type) }).ToArray());
             }
             else
             {
@@ -2378,7 +2402,7 @@ namespace MediaBrowser.Controller.Entities
 
         public void RemoveImages(List<ItemImageInfo> deletedImages)
         {
-            ImageInfos = ImageInfos.Except(deletedImages).ToArray();
+            SetImageInfos(GetImageInfos().Except(deletedImages).ToArray());
         }
 
         public virtual Task UpdateToRepositoryAsync(ItemUpdateType updateReason, CancellationToken cancellationToken)
@@ -2391,20 +2415,20 @@ namespace MediaBrowser.Controller.Entities
         /// <param name="directoryService">The directroy to be investigated.</param>
         public bool ValidateImages(IDirectoryService directoryService)
         {
-            var allFiles = ImageInfos
+            var allFiles = GetImageInfos()
                 .Where(i => i.IsLocalFile)
                 .Select(i => System.IO.Path.GetDirectoryName(i.Path))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .SelectMany(path => directoryService.GetFilePaths(path))
                 .ToList();
 
-            var deletedImages = ImageInfos
+            var deletedImages = GetImageInfos()
                 .Where(image => image.IsLocalFile && !allFiles.Contains(image.Path, StringComparer.OrdinalIgnoreCase))
                 .ToList();
 
             if (deletedImages.Count > 0)
             {
-                ImageInfos = ImageInfos.Except(deletedImages).ToArray();
+                SetImageInfos(GetImageInfos().Except(deletedImages).ToArray());
             }
 
             return deletedImages.Count > 0;
@@ -2504,9 +2528,9 @@ namespace MediaBrowser.Controller.Entities
             }
 
             // Yield return is more performant than LINQ Where on an Array
-            for (var i = 0; i < ImageInfos.Length; i++)
+            for (var i = 0; i < GetImageInfos().Length; i++)
             {
-                var imageInfo = ImageInfos[i];
+                var imageInfo = GetImageInfos()[i];
                 if (imageInfo.Type == imageType)
                 {
                     yield return imageInfo;
@@ -2578,13 +2602,13 @@ namespace MediaBrowser.Controller.Entities
 
                 if (deleted.Count > 0)
                 {
-                    ImageInfos = ImageInfos.Except(deleted).ToArray();
+                    SetImageInfos(GetImageInfos().Except(deleted).ToArray());
                 }
             }
 
             if (newImageList.Count > 0)
             {
-                ImageInfos = ImageInfos.Concat(newImageList.Select(i => GetImageInfo(i, imageType))).ToArray();
+                SetImageInfos(GetImageInfos().Concat(newImageList.Select(i => GetImageInfo(i, imageType))).ToArray());
             }
 
             return imageUpdated || newImageList.Count > 0;
@@ -2708,19 +2732,20 @@ namespace MediaBrowser.Controller.Entities
         protected T GetItemLookupInfo<T>()
             where T : ItemLookupInfo, new()
         {
-            return new T
+            var lookupInfo = new T
             {
                 Path = Path,
                 MetadataCountryCode = GetPreferredMetadataCountryCode(),
                 MetadataLanguage = GetPreferredMetadataLanguage(),
                 Name = GetNameForMetadataLookup(),
                 OriginalTitle = OriginalTitle,
-                ProviderIds = ProviderIds,
                 IndexNumber = IndexNumber,
                 ParentIndexNumber = ParentIndexNumber,
                 Year = ProductionYear,
                 PremiereDate = PremiereDate
             };
+            lookupInfo.SetProviderId(GetProviderId());
+            return lookupInfo;
         }
 
         protected virtual string GetNameForMetadataLookup()
@@ -2960,12 +2985,12 @@ namespace MediaBrowser.Controller.Entities
 
         public IEnumerable<BaseItem> GetThemeSongs()
         {
-            return ThemeSongIds.Select(LibraryManager.GetItemById);
+            return GetThemeSongIds().Select(LibraryManager.GetItemById);
         }
 
         public IEnumerable<BaseItem> GetThemeVideos()
         {
-            return ThemeVideoIds.Select(LibraryManager.GetItemById);
+            return GetThemeVideoIds().Select(LibraryManager.GetItemById);
         }
 
         /// <summary>

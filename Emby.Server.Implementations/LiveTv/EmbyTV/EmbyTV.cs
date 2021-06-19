@@ -1379,15 +1379,18 @@ namespace Emby.Server.Implementations.LiveTv.EmbyTV
                     return null;
                 }
 
+                var searchInfo = new SeriesInfo
+                {
+                    Name = timer.Name,
+                    MetadataCountryCode = _config.Configuration.MetadataCountryCode,
+                    MetadataLanguage = _config.Configuration.PreferredMetadataLanguage
+                };
+
+                searchInfo.SetProviderId(timer.SeriesProviderIds);
+
                 var query = new RemoteSearchQuery<SeriesInfo>()
                 {
-                    SearchInfo = new SeriesInfo
-                    {
-                        ProviderIds = timer.SeriesProviderIds,
-                        Name = timer.Name,
-                        MetadataCountryCode = _config.Configuration.MetadataCountryCode,
-                        MetadataLanguage = _config.Configuration.PreferredMetadataLanguage
-                    }
+                    SearchInfo = searchInfo
                 };
 
                 var results = await _providerManager.GetRemoteSearchResults<Series, SeriesInfo>(query, cancellationToken).ConfigureAwait(false);
@@ -2498,7 +2501,7 @@ namespace Emby.Server.Implementations.LiveTv.EmbyTV
             timerInfo.OfficialRating = programInfo.OfficialRating;
             timerInfo.IsRepeat = programInfo.IsRepeat;
             timerInfo.SeriesId = programInfo.ExternalSeriesId;
-            timerInfo.ProviderIds = programInfo.ProviderIds;
+            timerInfo.ProviderIds = programInfo.GetProviderId();
             timerInfo.Tags = programInfo.Tags;
 
             var seriesProviderIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);

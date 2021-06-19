@@ -1033,7 +1033,7 @@ namespace Emby.Server.Implementations.Channels
                 item.ParentIndexNumber = info.ParentIndexNumber;
                 item.PremiereDate = info.PremiereDate;
                 item.ProductionYear = info.ProductionYear;
-                item.ProviderIds = info.ProviderIds;
+                item.SetProviderId(info.GetProviderId());
                 item.OfficialRating = info.OfficialRating;
                 item.DateCreated = info.DateCreated ?? DateTime.UtcNow;
                 item.Tags = info.Tags.ToArray();

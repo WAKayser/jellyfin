@@ -18,6 +18,8 @@ namespace MediaBrowser.Model.Dto
     /// </summary>
     public class BaseItemDto : IHasProviderIds, IItemDto, IHasServerId
     {
+        private Dictionary<string, string> _providerIds;
+
         /// <summary>
         /// Gets or sets the name.
         /// </summary>
@@ -248,12 +250,6 @@ namespace MediaBrowser.Model.Dto
         /// </summary>
         /// <value>The trailer urls.</value>
         public IReadOnlyCollection<MediaUrl> RemoteTrailers { get; set; }
-
-        /// <summary>
-        /// Gets or sets the provider ids.
-        /// </summary>
-        /// <value>The provider ids.</value>
-        public Dictionary<string, string> ProviderIds { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is HD.
@@ -782,5 +778,33 @@ namespace MediaBrowser.Model.Dto
         /// </summary>
         /// <value>The current program.</value>
         public BaseItemDto CurrentProgram { get; set; }
+
+        /// <summary>
+        /// Gets or sets the provider ids.
+        /// </summary>
+        /// <value>The provider ids.</value>
+        /// <param name="providerIds">Set the ID.</param>
+        public void SetProviderId(Dictionary<string, string> providerIds)
+        {
+            _providerIds = providerIds;
+        }
+
+        public Dictionary<string, string> GetProviderId() => _providerIds;
+
+        public void SetProviderIdValue(string name, string value)
+        {
+            // If it's null remove the key from the dictionary
+            if (string.IsNullOrEmpty(value))
+            {
+                _providerIds!.Remove(name);
+            }
+            else
+            {
+                // Ensure it exists
+                _providerIds ??= new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+                _providerIds[name] = value;
+            }
+        }
     }
 }

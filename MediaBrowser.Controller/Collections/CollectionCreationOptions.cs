@@ -10,9 +10,11 @@ namespace MediaBrowser.Controller.Collections
 {
     public class CollectionCreationOptions : IHasProviderIds
     {
+        private Dictionary<string, string> _providerIds;
+
         public CollectionCreationOptions()
         {
-            ProviderIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            SetProviderId(new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
             ItemIdList = Array.Empty<string>();
             UserIds = Array.Empty<Guid>();
         }
@@ -23,10 +25,20 @@ namespace MediaBrowser.Controller.Collections
 
         public bool IsLocked { get; set; }
 
-        public Dictionary<string, string> ProviderIds { get; set; }
-
         public IReadOnlyList<string> ItemIdList { get; set; }
 
         public IReadOnlyList<Guid> UserIds { get; set; }
+
+        /// <summary>
+        /// Gets or sets the provider ids.
+        /// </summary>
+        /// <value>The provider ids.</value>
+        /// <param name="providerIds">Set the ID.</param>
+        public void SetProviderId(Dictionary<string, string> providerIds)
+        {
+            _providerIds = providerIds;
+        }
+
+        public Dictionary<string, string> GetProviderId() => _providerIds;
     }
 }

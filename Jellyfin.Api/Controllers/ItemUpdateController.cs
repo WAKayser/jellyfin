@@ -300,15 +300,15 @@ namespace Jellyfin.Api.Controllers
                 item.RunTimeTicks = request.RunTimeTicks;
             }
 
-            foreach (var pair in request.ProviderIds.ToList())
+            foreach (var pair in request.GetProviderId().ToList())
             {
                 if (string.IsNullOrEmpty(pair.Value))
                 {
-                    request.ProviderIds.Remove(pair.Key);
+                    request.SetProviderIdValue(pair.Key, null);
                 }
             }
 
-            item.ProviderIds = request.ProviderIds;
+            item.SetProviderId(request.GetProviderId());
 
             if (item is Video video)
             {

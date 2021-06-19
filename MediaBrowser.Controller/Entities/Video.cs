@@ -465,14 +465,14 @@ namespace MediaBrowser.Controller.Entities
 
             foreach (var item in localAlternates)
             {
-                item.ImageInfos = ImageInfos;
+                item.SetImageInfos(GetImageInfos());
                 item.Overview = Overview;
                 item.ProductionYear = ProductionYear;
                 item.PremiereDate = PremiereDate;
                 item.CommunityRating = CommunityRating;
                 item.OfficialRating = OfficialRating;
                 item.Genres = Genres;
-                item.ProviderIds = ProviderIds;
+                item.SetProviderId(GetProviderId());
 
                 await item.UpdateToRepositoryAsync(ItemUpdateType.MetadataDownload, cancellationToken).ConfigureAwait(false);
             }

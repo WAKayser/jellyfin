@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using MediaBrowser.Common.Configuration;
@@ -75,8 +75,8 @@ namespace Jellyfin.XbmcMetadata.Tests.Parsers
             Assert.Equal(2, item.AirsAfterSeasonNumber);
             Assert.Equal(3, item.AirsBeforeSeasonNumber);
             Assert.Equal(1, item.AirsBeforeEpisodeNumber);
-            Assert.Equal("tt5017734", item.ProviderIds[MetadataProvider.Imdb.ToString()]);
-            Assert.Equal("1276153", item.ProviderIds[MetadataProvider.Tmdb.ToString()]);
+            Assert.Equal("tt5017734", item.GetProviderId()[MetadataProvider.Imdb.ToString()]);
+            Assert.Equal("1276153", item.GetProviderId()[MetadataProvider.Tmdb.ToString()]);
 
             // Credits
             var writers = result.People.Where(x => x.Type == PersonType.Writer).ToArray();

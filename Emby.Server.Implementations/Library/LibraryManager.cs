@@ -1900,7 +1900,7 @@ namespace Emby.Server.Implementations.Library
                 throw new ArgumentNullException(nameof(item));
             }
 
-            var outdated = forceUpdate ? item.ImageInfos.Where(i => i.Path != null).ToArray() : item.ImageInfos.Where(ImageNeedsRefresh).ToArray();
+            var outdated = forceUpdate ? item.GetImageInfos().Where(i => i.Path != null).ToArray() : item.GetImageInfos().Where(ImageNeedsRefresh).ToArray();
             // Skip image processing if current or live tv source
             if (outdated.Length == 0 || item.SourceType != SourceType.Library)
             {
@@ -3032,7 +3032,7 @@ namespace Emby.Server.Implementations.Library
                     saveEntity = true;
                 }
 
-                foreach (var id in person.ProviderIds)
+                foreach (var id in person.GetProviderId())
                 {
                     if (!string.Equals(personEntity.GetProviderId(id.Key), id.Value, StringComparison.OrdinalIgnoreCase))
                     {

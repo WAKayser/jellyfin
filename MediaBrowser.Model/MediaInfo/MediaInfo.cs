@@ -10,6 +10,8 @@ namespace MediaBrowser.Model.MediaInfo
 {
     public class MediaInfo : MediaSourceInfo, IHasProviderIds
     {
+        private Dictionary<string, string> _providerIds;
+
         public MediaInfo()
         {
             Chapters = Array.Empty<ChapterInfo>();
@@ -18,7 +20,7 @@ namespace MediaBrowser.Model.MediaInfo
             Studios = Array.Empty<string>();
             Genres = Array.Empty<string>();
             People = Array.Empty<BaseItemPerson>();
-            ProviderIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            SetProviderId(new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
         }
 
         public ChapterInfo[] Chapters { get; set; }
@@ -63,8 +65,6 @@ namespace MediaBrowser.Model.MediaInfo
 
         public BaseItemPerson[] People { get; set; }
 
-        public Dictionary<string, string> ProviderIds { get; set; }
-
         /// <summary>
         /// Gets or sets the official rating.
         /// </summary>
@@ -82,5 +82,17 @@ namespace MediaBrowser.Model.MediaInfo
         /// </summary>
         /// <value>The overview.</value>
         public string Overview { get; set; }
+
+        /// <summary>
+        /// Gets or sets the provider ids.
+        /// </summary>
+        /// <value>The provider ids.</value>
+        /// <param name="providerIds">Set the ID.</param>
+        public void SetProviderId(Dictionary<string, string> providerIds)
+        {
+            _providerIds = providerIds;
+        }
+
+        public Dictionary<string, string> GetProviderId() => _providerIds;
     }
 }

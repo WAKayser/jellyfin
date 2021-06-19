@@ -89,8 +89,8 @@ namespace Jellyfin.XbmcMetadata.Tests.Parsers
 
             Assert.Equal("Justice League", item.OriginalTitle);
             Assert.Equal("Justice for all.", item.Tagline);
-            Assert.Equal("tt0974015", item.ProviderIds[MetadataProvider.Imdb.ToString()]);
-            Assert.Equal("141052", item.ProviderIds[MetadataProvider.Tmdb.ToString()]);
+            Assert.Equal("tt0974015", item.GetProviderId()[MetadataProvider.Imdb.ToString()]);
+            Assert.Equal("141052", item.GetProviderId()[MetadataProvider.Tmdb.ToString()]);
 
             Assert.Equal(4, item.Genres.Length);
             Assert.Contains("Action", item.Genres);
@@ -152,7 +152,7 @@ namespace Jellyfin.XbmcMetadata.Tests.Parsers
             Assert.Equal(new DateTime(2021, 02, 11, 07, 47, 23), userData.LastPlayedDate);
 
             // Movie set
-            Assert.Equal("702342", item.ProviderIds[MetadataProvider.TmdbCollection.ToString()]);
+            Assert.Equal("702342", item.GetProviderId()[MetadataProvider.TmdbCollection.ToString()]);
             Assert.Equal("Justice League Collection", item.CollectionName);
 
             // Images
@@ -204,7 +204,7 @@ namespace Jellyfin.XbmcMetadata.Tests.Parsers
             _parser.Fetch(result, path, CancellationToken.None);
             var item = (Movie)result.Item;
 
-            Assert.Equal(id, item.ProviderIds[provider]);
+            Assert.Equal(id, item.GetProviderId()[provider]);
         }
 
         [Fact]
@@ -218,8 +218,8 @@ namespace Jellyfin.XbmcMetadata.Tests.Parsers
             _parser.Fetch(result, "Test Data/Radarr.nfo", CancellationToken.None);
             var item = (Movie)result.Item;
 
-            Assert.Equal("583689", item.ProviderIds[MetadataProvider.Tmdb.ToString()]);
-            Assert.Equal("tt4154796", item.ProviderIds[MetadataProvider.Imdb.ToString()]);
+            Assert.Equal("583689", item.GetProviderId()[MetadataProvider.Tmdb.ToString()]);
+            Assert.Equal("tt4154796", item.GetProviderId()[MetadataProvider.Imdb.ToString()]);
         }
 
         [Fact]

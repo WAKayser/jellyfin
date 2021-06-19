@@ -261,10 +261,10 @@ namespace Jellyfin.Api.Controllers
                 "Setting provider id's to item {0}-{1}: {2}",
                 item.Id,
                 item.Name,
-                JsonSerializer.Serialize(searchResult.ProviderIds));
+                JsonSerializer.Serialize(searchResult.GetProviderId()));
 
             // Since the refresh process won't erase provider Ids, we need to set this explicitly now.
-            item.ProviderIds = searchResult.ProviderIds;
+            item.SetProviderId(searchResult.GetProviderId());
             await _providerManager.RefreshFullItem(
                 item,
                 new MetadataRefreshOptions(new DirectoryService(_fileSystem))

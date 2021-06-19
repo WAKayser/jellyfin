@@ -160,9 +160,9 @@ namespace Emby.Server.Implementations.Collections
                     Name = name,
                     Path = path,
                     IsLocked = options.IsLocked,
-                    ProviderIds = options.ProviderIds,
                     DateCreated = DateTime.UtcNow
                 };
+                collection.SetProviderId(options.GetProviderId());
 
                 parentFolder.AddChild(collection, CancellationToken.None);
 

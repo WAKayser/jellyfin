@@ -49,19 +49,21 @@ namespace MediaBrowser.Providers.Plugins.Tmdb.TV
 
             var item = metadataResult.Item;
 
+            var result = new RemoteSearchResult
+            {
+                IndexNumber = item.IndexNumber,
+                Name = item.Name,
+                ParentIndexNumber = item.ParentIndexNumber,
+                PremiereDate = item.PremiereDate,
+                ProductionYear = item.ProductionYear,
+                SearchProviderName = Name,
+                IndexNumberEnd = item.IndexNumberEnd
+            };
+            result.SetProviderId(item.GetProviderId());
+
             return new[]
             {
-                new RemoteSearchResult
-                {
-                    IndexNumber = item.IndexNumber,
-                    Name = item.Name,
-                    ParentIndexNumber = item.ParentIndexNumber,
-                    PremiereDate = item.PremiereDate,
-                    ProductionYear = item.ProductionYear,
-                    ProviderIds = item.ProviderIds,
-                    SearchProviderName = Name,
-                    IndexNumberEnd = item.IndexNumberEnd
-                }
+                result
             };
         }
 

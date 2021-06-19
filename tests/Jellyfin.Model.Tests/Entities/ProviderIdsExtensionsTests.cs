@@ -19,9 +19,7 @@ namespace Jellyfin.Model.Tests.Entities
         public void HasProviderId_NullProvider_False()
         {
             var nullProvider = new ProviderIdsExtensionsTestsObject
-            {
-                ProviderIds = null!
-            };
+            { };
 
             Assert.False(nullProvider.HasProviderId(MetadataProvider.Imdb));
         }
@@ -42,7 +40,7 @@ namespace Jellyfin.Model.Tests.Entities
         public void HasProviderId_FoundName_True()
         {
             var provider = new ProviderIdsExtensionsTestsObject();
-            provider.ProviderIds[MetadataProvider.Imdb.ToString()] = ExampleImdbId;
+            provider.SetProviderIdValue(MetadataProvider.Imdb.ToString(), ExampleImdbId);
 
             Assert.True(provider.HasProviderId(MetadataProvider.Imdb));
         }
@@ -51,7 +49,7 @@ namespace Jellyfin.Model.Tests.Entities
         public void HasProviderId_FoundNameEmptyValue_False()
         {
             var provider = new ProviderIdsExtensionsTestsObject();
-            provider.ProviderIds[MetadataProvider.Imdb.ToString()] = string.Empty;
+            provider.SetProviderIdValue(MetadataProvider.Imdb.ToString(), string.Empty);
 
             Assert.False(provider.HasProviderId(MetadataProvider.Imdb));
         }
@@ -79,7 +77,6 @@ namespace Jellyfin.Model.Tests.Entities
         {
             var nullProvider = new ProviderIdsExtensionsTestsObject
             {
-                ProviderIds = null!
             };
 
             Assert.Null(nullProvider.GetProviderId(MetadataProvider.Imdb));
@@ -96,7 +93,6 @@ namespace Jellyfin.Model.Tests.Entities
         {
             var nullProvider = new ProviderIdsExtensionsTestsObject
             {
-                ProviderIds = null!
             };
 
             Assert.False(nullProvider.TryGetProviderId(MetadataProvider.Imdb, out _));
@@ -106,7 +102,7 @@ namespace Jellyfin.Model.Tests.Entities
         public void GetProviderId_FoundName_Id()
         {
             var provider = new ProviderIdsExtensionsTestsObject();
-            provider.ProviderIds[MetadataProvider.Imdb.ToString()] = ExampleImdbId;
+            provider.SetProviderIdValue(MetadataProvider.Imdb.ToString(), ExampleImdbId);
 
             Assert.Equal(ExampleImdbId, provider.GetProviderId(MetadataProvider.Imdb));
         }
@@ -115,7 +111,7 @@ namespace Jellyfin.Model.Tests.Entities
         public void TryGetProviderId_FoundName_True()
         {
             var provider = new ProviderIdsExtensionsTestsObject();
-            provider.ProviderIds[MetadataProvider.Imdb.ToString()] = ExampleImdbId;
+            provider.SetProviderIdValue(MetadataProvider.Imdb.ToString(), ExampleImdbId);
 
             Assert.True(provider.TryGetProviderId(MetadataProvider.Imdb, out var id));
             Assert.Equal(ExampleImdbId, id);
@@ -125,7 +121,7 @@ namespace Jellyfin.Model.Tests.Entities
         public void TryGetProviderId_FoundNameEmptyValue_False()
         {
             var provider = new ProviderIdsExtensionsTestsObject();
-            provider.ProviderIds[MetadataProvider.Imdb.ToString()] = string.Empty;
+            provider.SetProviderIdValue(MetadataProvider.Imdb.ToString(), string.Empty);
 
             Assert.False(provider.TryGetProviderId(MetadataProvider.Imdb, out var id));
             Assert.Null(id);
@@ -142,16 +138,16 @@ namespace Jellyfin.Model.Tests.Entities
         {
             var provider = new ProviderIdsExtensionsTestsObject();
             provider.SetProviderId(MetadataProvider.Imdb, null!);
-            Assert.Empty(provider.ProviderIds);
+            Assert.Empty(provider.GetProviderId());
         }
 
         [Fact]
         public void SetProviderId_EmptyName_Remove()
         {
             var provider = new ProviderIdsExtensionsTestsObject();
-            provider.ProviderIds[MetadataProvider.Imdb.ToString()] = ExampleImdbId;
+            provider.SetProviderIdValue(MetadataProvider.Imdb.ToString(), ExampleImdbId);
             provider.SetProviderId(MetadataProvider.Imdb, string.Empty);
-            Assert.Empty(provider.ProviderIds);
+            Assert.Empty(provider.GetProviderId());
         }
 
         [Fact]
@@ -159,7 +155,7 @@ namespace Jellyfin.Model.Tests.Entities
         {
             var provider = new ProviderIdsExtensionsTestsObject();
             provider.SetProviderId(MetadataProvider.Imdb, ExampleImdbId);
-            Assert.Single(provider.ProviderIds);
+            Assert.Single(provider.GetProviderId());
         }
 
         [Fact]
@@ -167,11 +163,10 @@ namespace Jellyfin.Model.Tests.Entities
         {
             var nullProvider = new ProviderIdsExtensionsTestsObject
             {
-                ProviderIds = null!
             };
 
             nullProvider.SetProviderId(MetadataProvider.Imdb, ExampleImdbId);
-            Assert.Single(nullProvider.ProviderIds);
+            Assert.Single(nullProvider.GetProviderId());
         }
 
         [Fact]
@@ -179,18 +174,44 @@ namespace Jellyfin.Model.Tests.Entities
         {
             var nullProvider = new ProviderIdsExtensionsTestsObject
             {
-                ProviderIds = null!
             };
 
             nullProvider.SetProviderId(MetadataProvider.Imdb, string.Empty);
-            Assert.Null(nullProvider.ProviderIds);
+            Assert.Null(nullProvider.GetProviderId());
         }
 
         private class ProviderIdsExtensionsTestsObject : IHasProviderIds
         {
             public static readonly ProviderIdsExtensionsTestsObject Empty = new ProviderIdsExtensionsTestsObject();
+            private Dictionary<string, string>? _providerIds;
 
-            public Dictionary<string, string> ProviderIds { get; set; } = new Dictionary<string, string>();
+            /// <summary>
+            /// Gets or sets the provider ids.
+            /// </summary>
+            /// <value>The provider ids.</value>
+            /// <param name="providerIds">Set the ID.</param>
+            public void SetProviderId(Dictionary<string, string> providerIds)
+            {
+                _providerIds = providerIds;
+            }
+
+            public void SetProviderIdValue(string name, string value)
+            {
+                // If it's null remove the key from the dictionary
+                if (string.IsNullOrEmpty(value))
+                {
+                    _providerIds!.Remove(name);
+                }
+                else
+                {
+                    // Ensure it exists
+                    _providerIds ??= new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+                    _providerIds[name] = value;
+                }
+            }
+
+            public Dictionary<string, string> GetProviderId() => _providerIds!;
         }
     }
 }

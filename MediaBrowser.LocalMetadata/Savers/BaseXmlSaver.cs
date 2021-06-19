@@ -339,11 +339,11 @@ namespace MediaBrowser.LocalMetadata.Savers
                 writer.WriteElementString("RunningTime", Math.Floor(timespan.TotalMinutes).ToString(_usCulture));
             }
 
-            if (item.ProviderIds != null)
+            if (item.GetProviderId() != null)
             {
-                foreach (var providerKey in item.ProviderIds.Keys)
+                foreach (var providerKey in item.GetProviderId().Keys)
                 {
-                    var providerId = item.ProviderIds[providerKey];
+                    var providerId = item.GetProviderId()[providerKey];
                     if (!string.IsNullOrEmpty(providerId))
                     {
                         writer.WriteElementString(providerKey + "Id", providerId);

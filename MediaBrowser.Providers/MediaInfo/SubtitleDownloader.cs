@@ -162,7 +162,6 @@ namespace MediaBrowser.Providers.MediaInfo
                 Name = video.Name,
                 ParentIndexNumber = video.ParentIndexNumber,
                 ProductionYear = video.ProductionYear,
-                ProviderIds = video.ProviderIds,
 
                 // Stop as soon as we find something
                 SearchAllProviders = false,
@@ -171,6 +170,7 @@ namespace MediaBrowser.Providers.MediaInfo
                 DisabledSubtitleFetchers = disabledSubtitleFetchers,
                 SubtitleFetcherOrder = subtitleFetcherOrder
             };
+            request.SetProviderId(video.GetProviderId());
 
             if (video is Episode episode)
             {

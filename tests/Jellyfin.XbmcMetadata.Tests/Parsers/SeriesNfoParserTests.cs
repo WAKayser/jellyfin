@@ -48,9 +48,9 @@ namespace Jellyfin.XbmcMetadata.Tests.Parsers
             Assert.Equal("American Gods", item.OriginalTitle);
             Assert.Equal(string.Empty, item.Tagline);
             Assert.Equal(0, item.RunTimeTicks);
-            Assert.Equal("46639", item.ProviderIds[MetadataProvider.Tmdb.ToString()]);
-            Assert.Equal("253573", item.ProviderIds[MetadataProvider.Tvdb.ToString()]);
-            Assert.Equal("tt11111", item.ProviderIds[MetadataProvider.Imdb.ToString()]);
+            Assert.Equal("46639", item.GetProviderId()[MetadataProvider.Tmdb.ToString()]);
+            Assert.Equal("253573", item.GetProviderId()[MetadataProvider.Tvdb.ToString()]);
+            Assert.Equal("tt11111", item.GetProviderId()[MetadataProvider.Imdb.ToString()]);
 
             Assert.Equal(3, item.Genres.Length);
             Assert.Contains("Drama", item.Genres);
@@ -91,7 +91,7 @@ namespace Jellyfin.XbmcMetadata.Tests.Parsers
             _parser.Fetch(result, path, CancellationToken.None);
             var item = (Series)result.Item;
 
-            Assert.Equal(id, item.ProviderIds[provider]);
+            Assert.Equal(id, item.GetProviderId()[provider]);
         }
 
         [Fact]

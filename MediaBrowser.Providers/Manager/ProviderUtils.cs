@@ -166,14 +166,14 @@ namespace MediaBrowser.Providers.Manager
                 }
             }
 
-            foreach (var id in source.ProviderIds)
+            foreach (var id in source.GetProviderId())
             {
                 var key = id.Key;
 
                 // Don't replace existing Id's.
-                if (replaceData || !target.ProviderIds.ContainsKey(key))
+                if (replaceData || !target.GetProviderId().ContainsKey(key))
                 {
-                    target.ProviderIds[key] = id.Value;
+                    target.SetProviderId(key, id.Value);
                 }
             }
 
@@ -218,11 +218,11 @@ namespace MediaBrowser.Providers.Manager
 
                 if (personInSource != null)
                 {
-                    foreach (var providerId in personInSource.ProviderIds)
+                    foreach (var providerId in personInSource.GetProviderId())
                     {
-                        if (!person.ProviderIds.ContainsKey(providerId.Key))
+                        if (!person.GetProviderId().ContainsKey(providerId.Key))
                         {
-                            person.ProviderIds[providerId.Key] = providerId.Value;
+                            person.SetProviderIdValue(providerId.Key, providerId.Value);
                         }
                     }
 

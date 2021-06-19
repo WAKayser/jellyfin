@@ -14,6 +14,7 @@ namespace MediaBrowser.Controller.Channels
 {
     public class ChannelItemInfo : IHasProviderIds
     {
+        private Dictionary<string, string> _providerIds;
         public ChannelItemInfo()
         {
             MediaSources = new List<MediaSourceInfo>();
@@ -22,7 +23,7 @@ namespace MediaBrowser.Controller.Channels
             Studios = new List<string>();
             People = new List<PersonInfo>();
             Tags = new List<string>();
-            ProviderIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            SetProviderId(new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
             Artists = new List<string>();
             AlbumArtists = new List<string>();
         }
@@ -67,8 +68,6 @@ namespace MediaBrowser.Controller.Channels
 
         public List<TrailerType> TrailerTypes { get; set; }
 
-        public Dictionary<string, string> ProviderIds { get; set; }
-
         public DateTime? PremiereDate { get; set; }
 
         public int? ProductionYear { get; set; }
@@ -94,5 +93,17 @@ namespace MediaBrowser.Controller.Channels
         public bool IsLiveStream { get; set; }
 
         public string Etag { get; set; }
+
+        /// <summary>
+        /// Gets or sets the provider ids.
+        /// </summary>
+        /// <value>The provider ids.</value>
+        /// <param name="providerIds">Set the ID.</param>
+        public void SetProviderId(Dictionary<string, string> providerIds)
+        {
+            _providerIds = providerIds;
+        }
+
+        public Dictionary<string, string> GetProviderId() => _providerIds;
     }
 }

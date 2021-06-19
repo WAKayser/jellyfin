@@ -95,7 +95,7 @@ namespace MediaBrowser.Controller.Entities
             existing.SortOrder = person.SortOrder ?? existing.SortOrder;
             existing.ImageUrl = person.ImageUrl ?? existing.ImageUrl;
 
-            foreach (var id in person.ProviderIds)
+            foreach (var id in person.GetProviderId())
             {
                 existing.SetProviderId(id.Key, id.Value);
             }

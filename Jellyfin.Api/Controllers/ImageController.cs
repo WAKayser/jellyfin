@@ -434,7 +434,7 @@ namespace Jellyfin.Api.Controllers
             }
 
             var list = new List<ImageInfo>();
-            var itemImages = item.ImageInfos;
+            var itemImages = item.GetImageInfos();
 
             if (itemImages.Length == 0)
             {

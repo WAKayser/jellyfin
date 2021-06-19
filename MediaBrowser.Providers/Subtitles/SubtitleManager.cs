@@ -301,10 +301,10 @@ namespace MediaBrowser.Providers.Subtitles
                 Name = video.Name,
                 ParentIndexNumber = video.ParentIndexNumber,
                 ProductionYear = video.ProductionYear,
-                ProviderIds = video.ProviderIds,
                 RuntimeTicks = video.RunTimeTicks,
                 IsPerfectMatch = isPerfectMatch ?? false
             };
+            request.SetProviderId(video.GetProviderId());
 
             if (video is Episode episode)
             {

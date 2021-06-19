@@ -846,7 +846,7 @@ namespace MediaBrowser.Providers.Manager
 
                     foreach (var result in results)
                     {
-                        var existingMatch = resultList.FirstOrDefault(i => i.ProviderIds.Any(p => string.Equals(result.GetProviderId(p.Key), p.Value, StringComparison.OrdinalIgnoreCase)));
+                        var existingMatch = resultList.FirstOrDefault(i => i.GetProviderId().Any(p => string.Equals(result.GetProviderId(p.Key), p.Value, StringComparison.OrdinalIgnoreCase)));
 
                         if (existingMatch == null)
                         {
@@ -854,11 +854,11 @@ namespace MediaBrowser.Providers.Manager
                         }
                         else
                         {
-                            foreach (var providerId in result.ProviderIds)
+                            foreach (var providerId in result.GetProviderId())
                             {
-                                if (!existingMatch.ProviderIds.ContainsKey(providerId.Key))
+                                if (!existingMatch.GetProviderId().ContainsKey(providerId.Key))
                                 {
-                                    existingMatch.ProviderIds.Add(providerId.Key, providerId.Value);
+                                    existingMatch.SetProviderIdValue(providerId.Key, providerId.Value);
                                 }
                             }
 

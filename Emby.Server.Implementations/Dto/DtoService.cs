@@ -778,7 +778,7 @@ namespace Emby.Server.Implementations.Dto
 
                 // Prevent implicitly captured closure
                 var currentItem = item;
-                foreach (var image in currentItem.ImageInfos.Where(i => !currentItem.AllowsMultipleImages(i.Type)))
+                foreach (var image in currentItem.GetImageInfos().Where(i => !currentItem.AllowsMultipleImages(i.Type)))
                 {
                     if (options.GetImageLimit(image.Type) > 0)
                     {
@@ -872,7 +872,7 @@ namespace Emby.Server.Implementations.Dto
 
             if (options.ContainsField(ItemFields.ProviderIds))
             {
-                dto.ProviderIds = item.ProviderIds;
+                dto.SetProviderId(item.GetProviderId());
             }
 
             dto.RunTimeTicks = item.RunTimeTicks;
@@ -1324,7 +1324,7 @@ namespace Emby.Server.Implementations.Dto
                     break;
                 }
 
-                var allImages = parent.ImageInfos;
+                var allImages = parent.GetImageInfos();
 
                 if (logoLimit > 0 && !(imageTags != null && imageTags.ContainsKey(ImageType.Logo)) && dto.ParentLogoItemId == null)
                 {

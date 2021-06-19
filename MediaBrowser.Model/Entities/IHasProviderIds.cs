@@ -11,6 +11,13 @@ namespace MediaBrowser.Model.Entities
         /// Gets or sets the provider ids.
         /// </summary>
         /// <value>The provider ids.</value>
-        Dictionary<string, string> ProviderIds { get; set; }
+        /// <param name="providerIds">The id to be set.</param>
+        public void SetProviderId(Dictionary<string, string> providerIds);
+
+        /// <summary>
+        /// Get the provider id.
+        /// </summary>
+        /// <returns>The provider id.</returns>
+        public Dictionary<string, string> GetProviderId();
     }
 }

@@ -506,7 +506,7 @@ namespace Emby.Server.Implementations.Data
                     using (var saveImagesStatement = base.PrepareStatement(db, "Update TypedBaseItems set Images=@Images where guid=@Id"))
                     {
                         saveImagesStatement.TryBind("@Id", item.Id.ToByteArray());
-                        saveImagesStatement.TryBind("@Images", SerializeImages(item.ImageInfos));
+                        saveImagesStatement.TryBind("@Images", SerializeImages(item.GetImageInfos()));
 
                         saveImagesStatement.MoveNext();
                     }
@@ -901,8 +901,8 @@ namespace Emby.Server.Implementations.Data
             saveItemStatement.TryBind("@ExternalSeriesId", item.ExternalSeriesId);
             saveItemStatement.TryBind("@Tagline", item.Tagline);
 
-            saveItemStatement.TryBind("@ProviderIds", SerializeProviderIds(item.ProviderIds));
-            saveItemStatement.TryBind("@Images", SerializeImages(item.ImageInfos));
+            saveItemStatement.TryBind("@ProviderIds", SerializeProviderIds(item.GetProviderId()));
+            saveItemStatement.TryBind("@Images", SerializeImages(item.GetImageInfos()));
 
             if (item.ProductionLocations.Length > 0)
             {
@@ -1771,7 +1771,7 @@ namespace Emby.Server.Implementations.Data
                 }
             }
 
-            if (item.ProviderIds.Count == 0 && reader.TryGetString(index, out var providerIds))
+            if (item.GetProviderId().Count == 0 && reader.TryGetString(index, out var providerIds))
             {
                 DeserializeProviderIds(providerIds, item);
             }
@@ -1780,9 +1780,9 @@ namespace Emby.Server.Implementations.Data
 
             if (query.DtoOptions.EnableImages)
             {
-                if (item.ImageInfos.Length == 0 && reader.TryGetString(index, out var imageInfos))
+                if (item.GetImageInfos().Length == 0 && reader.TryGetString(index, out var imageInfos))
                 {
-                    item.ImageInfos = DeserializeImages(imageInfos);
+                    item.SetImageInfos(DeserializeImages(imageInfos));
                 }
 
                 index++;
@@ -2416,7 +2416,7 @@ namespace Emby.Server.Implementations.Data
                 item.ExtraIds.CopyTo(excludeIds, oldLen + 1);
 
                 query.ExcludeItemIds = excludeIds;
-                query.ExcludeProviderIds = item.ProviderIds;
+                query.ExcludeProviderIds = item.GetProviderId();
             }
 
             if (!string.IsNullOrEmpty(query.SearchTerm))
@@ -2714,7 +2714,7 @@ namespace Emby.Server.Implementations.Data
             {
                 var item = items[i];
 
-                foreach (var providerId in newItem.ProviderIds)
+                foreach (var providerId in newItem.GetProviderId())
                 {
                     if (providerId.Key == MetadataProvider.TmdbCollection.ToString())
                     {

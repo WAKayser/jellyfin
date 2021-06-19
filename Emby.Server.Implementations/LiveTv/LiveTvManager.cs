@@ -651,7 +651,7 @@ namespace Emby.Server.Implementations.LiveTv
             item.OfficialRating ??= info.OfficialRating;
             item.Overview ??= info.Overview;
             item.RunTimeTicks = (info.EndDate - info.StartDate).Ticks;
-            item.ProviderIds = info.ProviderIds;
+            item.SetProviderId(info.ProviderIds);
 
             foreach (var providerId in info.SeriesProviderIds)
             {

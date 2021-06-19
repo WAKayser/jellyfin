@@ -140,7 +140,7 @@ namespace MediaBrowser.Controller.Entities.AudioEntity
 
             if (artist != null)
             {
-                id.SetArtistProviderIds(artist.ProviderIds);
+                id.SetArtistProviderIds(artist.GetProviderId());
             }
 
             id.SetSongInfos((System.Collections.ObjectModel.Collection<SongInfo>)

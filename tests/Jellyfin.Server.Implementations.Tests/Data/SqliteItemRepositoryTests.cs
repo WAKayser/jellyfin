@@ -281,7 +281,7 @@ namespace Jellyfin.Server.Implementations.Tests.Data
         {
             var result = new ProviderIdsExtensionsTestsObject();
             SqliteItemRepository.DeserializeProviderIds(value, result);
-            Assert.Equal(expected, result.ProviderIds);
+            Assert.Equal(expected, result.GetProviderId());
         }
 
         [Theory]
@@ -293,7 +293,35 @@ namespace Jellyfin.Server.Implementations.Tests.Data
 
         private class ProviderIdsExtensionsTestsObject : IHasProviderIds
         {
-            public Dictionary<string, string> ProviderIds { get; set; } = new Dictionary<string, string>();
+            private Dictionary<string, string> _providerIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            /// <summary>
+            /// Gets or sets the provider ids.
+            /// </summary>
+            /// <value>The provider ids.</value>
+            /// <param name="providerIds">Set the ID.</param>
+            public void SetProviderId(Dictionary<string, string> providerIds)
+            {
+                _providerIds = providerIds;
+            }
+
+            public Dictionary<string, string> GetProviderId() => _providerIds;
+
+            public void SetProviderIdValue(string name, string value)
+            {
+                // If it's null remove the key from the dictionary
+                if (string.IsNullOrEmpty(value))
+                {
+                    _providerIds!.Remove(name);
+                }
+                else
+                {
+                    // Ensure it exists
+                    _providerIds ??= new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+                    _providerIds[name] = value;
+                }
+            }
         }
     }
 }

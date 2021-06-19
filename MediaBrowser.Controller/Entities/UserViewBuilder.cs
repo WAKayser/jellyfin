@@ -770,7 +770,7 @@ namespace MediaBrowser.Controller.Entities
             {
                 var filterValue = query.HasThemeSong.Value;
 
-                var themeCount = item.ThemeSongIds.Length;
+                var themeCount = item.GetThemeSongIds().Length;
                 var ok = filterValue ? themeCount > 0 : themeCount == 0;
 
                 if (!ok)
@@ -783,7 +783,7 @@ namespace MediaBrowser.Controller.Entities
             {
                 var filterValue = query.HasThemeVideo.Value;
 
-                var themeCount = item.ThemeVideoIds.Length;
+                var themeCount = item.GetThemeVideoIds().Length;
                 var ok = filterValue ? themeCount > 0 : themeCount == 0;
 
                 if (!ok)

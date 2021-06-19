@@ -10,10 +10,12 @@ namespace MediaBrowser.Controller.Providers
 {
     public class ItemLookupInfo : IHasProviderIds
     {
+        private Dictionary<string, string> _providerIds;
+
         public ItemLookupInfo()
         {
             IsAutomated = true;
-            ProviderIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            SetProviderId(new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -47,12 +49,6 @@ namespace MediaBrowser.Controller.Providers
         public string MetadataCountryCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the provider ids.
-        /// </summary>
-        /// <value>The provider ids.</value>
-        public Dictionary<string, string> ProviderIds { get; set; }
-
-        /// <summary>
         /// Gets or sets the year.
         /// </summary>
         /// <value>The year.</value>
@@ -65,5 +61,33 @@ namespace MediaBrowser.Controller.Providers
         public DateTime? PremiereDate { get; set; }
 
         public bool IsAutomated { get; set; }
+
+        /// <summary>
+        /// Gets or sets the provider ids.
+        /// </summary>
+        /// <value>The provider ids.</value>
+        /// <param name="providerIds">Set the ID.</param>
+        public void SetProviderId(Dictionary<string, string> providerIds)
+        {
+            _providerIds = providerIds;
+        }
+
+        public Dictionary<string, string> GetProviderId() => _providerIds;
+
+        public void SetProviderIdValue(string name, string value)
+        {
+            // If it's null remove the key from the dictionary
+            if (string.IsNullOrEmpty(value))
+            {
+                _providerIds!.Remove(name);
+            }
+            else
+            {
+                // Ensure it exists
+                _providerIds ??= new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+                _providerIds[name] = value;
+            }
+        }
     }
 }

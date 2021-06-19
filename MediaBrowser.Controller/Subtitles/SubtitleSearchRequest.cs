@@ -11,6 +11,8 @@ namespace MediaBrowser.Controller.Subtitles
 {
     public class SubtitleSearchRequest : IHasProviderIds
     {
+        private Dictionary<string, string> _providerIds;
+
         public string Language { get; set; }
 
         public string TwoLetterISOLanguageName { get; set; }
@@ -35,8 +37,6 @@ namespace MediaBrowser.Controller.Subtitles
 
         public bool IsPerfectMatch { get; set; }
 
-        public Dictionary<string, string> ProviderIds { get; set; }
-
         public bool SearchAllProviders { get; set; }
 
         public string[] DisabledSubtitleFetchers { get; set; }
@@ -46,10 +46,22 @@ namespace MediaBrowser.Controller.Subtitles
         public SubtitleSearchRequest()
         {
             SearchAllProviders = true;
-            ProviderIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            SetProviderId(new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
 
             DisabledSubtitleFetchers = Array.Empty<string>();
             SubtitleFetcherOrder = Array.Empty<string>();
         }
+
+        /// <summary>
+        /// Gets or sets the provider ids.
+        /// </summary>
+        /// <value>The provider ids.</value>
+        /// <param name="providerIds">Set the ID.</param>
+        public void SetProviderId(Dictionary<string, string> providerIds)
+        {
+            _providerIds = providerIds;
+        }
+
+        public Dictionary<string, string> GetProviderId() => _providerIds;
     }
 }

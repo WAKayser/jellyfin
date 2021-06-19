@@ -310,7 +310,7 @@ namespace MediaBrowser.Controller.Entities.TV
 
             if (series != null)
             {
-                id.SeriesProviderIds = series.ProviderIds;
+                id.SeriesProviderIds = series.GetProviderId();
                 id.SeriesDisplayOrder = series.DisplayOrder;
             }
 
